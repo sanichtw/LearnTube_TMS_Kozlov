@@ -17,7 +17,7 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="login_button">Login</string>
     <string name="login_with">Login with</string>
-    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="dont_have_an_account">Don\'t have an account? Sign up</string>
     <string name="sign_up">Sign up</string>
     <string name="twitter_icon_description">twitter icon</string>
 </resources>
