@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/LoginScreen">
+    app:startDestination="@id/PostsScreen">
 
     <fragment
         android:id="@+id/LoginScreen"
@@ -13,16 +13,16 @@
 
         <action
             android:id="@+id/action_LoginScreen_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/PostsScreen" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.learntube.presentation.fragments.SecondFragment"
+        android:id="@+id/PostsScreen"
+        android:name="com.example.learntube.presentation.fragments.PostsScreen"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_posts_screen">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_PostsScreen_to_FirstFragment"
             app:destination="@id/LoginScreen" />
     </fragment>
 </navigation>
