@@ -1,6 +1,6 @@
 package com.example.learntube.di.base
 
-import com.example.learntube.data.remote.api.PostsApi
+import com.example.learntube.data.remote.api.SearchItemApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object ApiModule {
 
-    //    private const val BASE_URL = "https://newsapi.org/v2/"
-    private const val BASE_URL = "https://youtube.googleapis.com/youtube/v3"
+    private const val BASE_URL = "https://youtube.googleapis.com/youtube/v3/"
 
     @Singleton
     @Provides
@@ -38,12 +37,12 @@ object ApiModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit
             .Builder()
-            .addConverterFactory(GsonConverterFactory.create()) //add json converter
-            .baseUrl(BASE_URL) //base url
-            .client(okHttpClient) //okHttp client
+            .addConverterFactory(GsonConverterFactory.create()) // add json converter
+            .baseUrl(BASE_URL) // base url
+            .client(okHttpClient) // okHttp client
             .build()
 
     @Singleton
     @Provides
-    fun providePostApiService(retrofit: Retrofit): PostsApi = retrofit.create(PostsApi::class.java)
+    fun providePostApiService(retrofit: Retrofit): SearchItemApi = retrofit.create(SearchItemApi::class.java)
 }
