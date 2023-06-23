@@ -2,7 +2,6 @@ package com.example.learntube.di.base
 
 import android.content.Context
 import androidx.room.Room
-import com.example.learntube.data.local.SearchItemEntity
 import com.example.learntube.data.local.SearchItemDataBase
 import dagger.Module
 import dagger.Provides
@@ -27,8 +26,8 @@ object DataBaseModule {
 
     @Provides
     @Singleton
-    fun provideDao(db: SearchItemDataBase) = db.postsDao()
+    fun provideDao(db: SearchItemDataBase) = db.searchItemDao()
 
-    @Provides
-    fun provideEntity() = SearchItemEntity()
+/*    @Provides
+    fun provideEntity() = SearchItemEntity()*/
 }

@@ -5,9 +5,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetPostInfoUseCase @Inject constructor(
+class GetSearchItemByIdUseCase @Inject constructor(
     private val searchItemRepository: SearchItemRepository
 ) {
-
-    suspend fun getPostInfo(postId: Long) = searchItemRepository.getSearchItemById(searchItemId = postId)
+    suspend fun getSearchItemById(searchItemId: Long) = searchItemRepository.getSearchItemById(searchItemId)
 }

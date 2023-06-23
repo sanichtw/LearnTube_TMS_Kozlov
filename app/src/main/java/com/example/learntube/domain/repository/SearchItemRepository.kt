@@ -1,9 +1,10 @@
 package com.example.learntube.domain.repository
 
-import com.example.learntube.data.remote.dto.SearchItemDto
+import com.example.learntube.domain.models.SearchItem
 
+interface SearchItemRepository {
 
-interface SearchItemRepository{
-    suspend fun getSearchItems(search: String?): List<SearchItemDto>
-    suspend fun getSearchItemById(searchItemId: Long): SearchItemDto?
+    suspend fun getSearchItems(searchQuery: String?): List<SearchItem>
+
+    suspend fun getSearchItemById(searchItemId: Long): SearchItem?
 }

@@ -1,4 +1,4 @@
-package com.example.learntube.data.remote.api
+package com.example.learntube.data.remote
 
 import com.example.learntube.data.remote.dto.ResponseDto
 import retrofit2.http.GET
@@ -12,7 +12,7 @@ interface SearchItemApi {
         const val PART_CONST = "snippet"
 
         const val QUERY_PARAM = "q"
-        const val QUERY_CONST = "Android Courses"
+        const val QUERY_CONST = "Javascript Courses"
 
         const val QUERY_RESULT = "maxResults"
         const val QUERY_RESULT_CONST = 50

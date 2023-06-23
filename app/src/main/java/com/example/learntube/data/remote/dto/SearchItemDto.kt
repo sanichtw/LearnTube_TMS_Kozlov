@@ -1,7 +1,10 @@
 package com.example.learntube.data.remote.dto
 
-import com.example.learntube.data.local.SearchItemEntity
-import com.example.learntube.domain.models.SearchItemDomain
+import com.example.learntube.data.local.entity.IdEntity
+import com.example.learntube.data.local.entity.SearchItemEntity
+import com.example.learntube.data.local.entity.SnippetEntity
+import com.example.learntube.domain.models.SearchItem
+import com.example.learntube.domain.models.Snippet
 import com.google.gson.annotations.SerializedName
 
 data class SearchItemDto(
@@ -9,60 +12,96 @@ data class SearchItemDto(
     val etag: String,
 
     @SerializedName("id")
-    val id: Id,
+    val kindId: IdDto,
 
+    @SerializedName("snippet")
+    val snippetDto: SnippetDto
+)
+
+data class IdDto(
     @SerializedName("kind")
     val kind: String,
 
-    @SerializedName("snippet")
-    val snippet: Snippet
-) {
-    data class Id(
-        @SerializedName("kind")
-        val kind: String,
+    @SerializedName("channelId")
+    val channelId: String?,
 
-        @SerializedName("playlistId")
-        val playlistId: String,
+    @SerializedName("playlistId")
+    val playlistId: String?,
 
-        @SerializedName("videoId")
-        val videoId: String
-    )
-
-    data class Snippet(
-        @SerializedName("channelId")
-        val channelId: String,
-
-        @SerializedName("channelTitle")
-        val channelTitle: String,
-
-        @SerializedName("description")
-        val description: String,
-
-        @SerializedName("liveBroadcastContent")
-        val liveBroadcastContent: String,
-
-        @SerializedName("publishTime")
-        val publishTime: String,
-
-        @SerializedName("publishedAt")
-        val publishedAt: String,
-
-        @SerializedName("thumbnails")
-        val thumbnails: ThumbnailsDto,
-
-        @SerializedName("title")
-        val title: String
-    ) {}
-}
-
-fun SearchItemDto.toLocalPost() = SearchItemEntity(
-    snippet = snippet,
-    etag = etag,
-    kind = kind,
+    @SerializedName("videoId")
+    val videoId: String?
 )
 
-fun SearchItemDto.toDomainPost() = SearchItemDomain(
-    snippet = snippet,
+data class SnippetDto(
+    @SerializedName("publishedAt")
+    val publishedAt: String,
+
+    @SerializedName("channelId")
+    val channelId: String,
+
+    @SerializedName("title")
+    val title: String,
+
+    @SerializedName("description")
+    val description: String,
+
+    @SerializedName("channelTitle")
+    val channelTitle: String,
+
+    @SerializedName("thumbnails")
+    val thumbnails: ThumbnailsDto,
+
+    @SerializedName("liveBroadcastContent")
+    val liveBroadcastContent: String,
+
+    @SerializedName("publishTime")
+    val publishTime: String,
+)
+
+fun SearchItemDto.toEntity() = SearchItemEntity(
+    snippet = snippetDto.toEntity(),
     etag = etag,
+    kindId = kindId.toEntity(),
+)
+
+fun SearchItemDto.toModel() = SearchItem(
+    snippet = snippetDto.toModel(),
+    etag = etag,
+    kindId = kindId.toModel(),
+)
+
+fun SnippetDto.toEntity() = SnippetEntity(
+    publishedAt = publishedAt,
+    channelId = channelId,
+    title = title,
+    description = description,
+    channelTitle = channelTitle,
+    thumbnails = thumbnails.toEntity(),
+    liveBroadcastContent = liveBroadcastContent,
+    publishTime = publishTime
+)
+
+fun SnippetDto.toModel() = Snippet(
+    publishedAt = publishedAt,
+    channelId = channelId,
+    title = title,
+    description = description,
+    channelTitle = channelTitle,
+    thumbnails = thumbnails.toModel(),
+    liveBroadcastContent = liveBroadcastContent,
+    publishTime = publishTime
+)
+
+fun IdDto.toEntity() = IdEntity(
     kind = kind,
+    playlistId = playlistId,
+    videoId = videoId,
+    channelId = channelId
+)
+
+fun IdDto.toModel() = com.example.learntube.domain.models.Id(
+    kind = kind,
+    playlistId = playlistId,
+    videoId = videoId,
+    channelId = channelId
 )

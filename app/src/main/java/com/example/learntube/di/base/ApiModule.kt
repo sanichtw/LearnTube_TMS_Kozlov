@@ -1,6 +1,6 @@
 package com.example.learntube.di.base
 
-import com.example.learntube.data.remote.api.SearchItemApi
+import com.example.learntube.data.remote.SearchItemApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -10,17 +10,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learntube.R
 import com.example.learntube.databinding.FragmentPostsScreenBinding
-import com.example.learntube.domain.models.SearchItemDomain
-import com.example.learntube.presentation.adapters.PostsAdapter
-import com.example.learntube.presentation.viewmodels.PostsViewModel
+import com.example.learntube.domain.models.SearchItem
+import com.example.learntube.presentation.adapters.SearchItemAdapter
+import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class PostsScreen : Fragment() {
 
     private var _binding: FragmentPostsScreenBinding? = null
-    private val viewModel: PostsViewModel by viewModels()
+    private val viewModel: SearchItemsViewModel by viewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -52,16 +53,19 @@ class PostsScreen : Fragment() {
         }
     }
 
-    private fun initRecycler(posts: List<SearchItemDomain>) {
+    private fun initRecycler(posts: List<SearchItem>) {
 //        val customItemDecoration = CustomItemDecoration(requireContext())
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
 //            addItemDecoration(customItemDecoration)
-            adapter = PostsAdapter(
+            adapter = SearchItemAdapter(
                 context = this@PostsScreen,
                 items = posts,
                 event = {
+                    findNavController().navigate(R.id.action_PostsScreen_to_FirstFragment)
+                },
+                event2 = {
                     findNavController().navigate(R.id.action_PostsScreen_to_FirstFragment)
                 }
             )

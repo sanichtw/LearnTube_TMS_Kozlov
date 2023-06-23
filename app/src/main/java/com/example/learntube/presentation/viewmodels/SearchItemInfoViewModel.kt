@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.learntube.data.local.SearchItemEntity
-import com.example.learntube.domain.use_cases.GetPostInfoUseCase
+import com.example.learntube.domain.models.SearchItem
+import com.example.learntube.domain.use_cases.GetSearchItemByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostInfoViewModel @Inject constructor(
-    private val getPostInfoUseCase: GetPostInfoUseCase
+class SearchItemInfoViewModel @Inject constructor(
+    private val getSearchItemByIdUseCase: GetSearchItemByIdUseCase
 ) : ViewModel() {
-    private val _postInfo = MutableLiveData<SearchItemEntity>()
-    val postInfo: LiveData<SearchItemEntity> = _postInfo
+    private val _searchItemInfo = MutableLiveData<SearchItem>()
+    val searchItemInfo: LiveData<SearchItem> = _searchItemInfo
 
     init {
         viewModelScope.launch {
@@ -24,6 +24,6 @@ class PostInfoViewModel @Inject constructor(
     }
 
     private suspend fun getPostInfo() {
-        _postInfo.value = getPostInfoUseCase.getPostInfo(3)
+        _searchItemInfo.value = getSearchItemByIdUseCase.getSearchItemById(3)
     }
 }

@@ -5,18 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.learntube.R
-import com.example.learntube.domain.models.SearchItemDomain
+import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.presentation.fragments.PostsScreen
 
-class PostsAdapter(
+class SearchItemAdapter(
     private val context: PostsScreen,
-    private val items: List<SearchItemDomain>,
-    private val event: (View) -> Unit
+    private val items: List<SearchItem>,
+    private val event: (View) -> Unit,
+    private val event2: (View) -> Unit
 ) :
-    RecyclerView.Adapter<PostsAdapter.CustomViewHolder>() {
+    RecyclerView.Adapter<SearchItemAdapter.CustomViewHolder>() {
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.icon)
@@ -29,9 +31,7 @@ class PostsAdapter(
             .from(parent.context)
             .inflate(R.layout.posts_items, parent, false)
 
-        itemView.setOnClickListener {
-            event(it)
-        }
+
         return CustomViewHolder(itemView)
     }
 
@@ -42,8 +42,18 @@ class PostsAdapter(
         }
         Glide
             .with(context)
-            .load(items[position].snippet.thumbnails.default)
+            .load(items[position].snippet.thumbnails.default?.url)
             .into(holder.imageView)
+
+        when (items[position].kindId.kind) {
+            "youtube#video" -> holder.imageView.setOnClickListener {
+                event
+            }
+
+            "youtube#playlist" -> holder.imageView.setOnClickListener {
+                Toast.makeText(context.requireContext(), "Event2", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun getItemCount(): Int {
