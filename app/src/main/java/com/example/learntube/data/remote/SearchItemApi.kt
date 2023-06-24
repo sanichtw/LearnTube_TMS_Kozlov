@@ -25,7 +25,7 @@ interface SearchItemApi {
     suspend fun getSearchItems(
         @Query(PART_PARAM) part: String = PART_CONST,
         @Query(QUERY_RESULT) maxResults: Int = QUERY_RESULT_CONST,
-        @Query(QUERY_PARAM) text: String = QUERY_CONST,
+        @Query(QUERY_PARAM) text: String? = QUERY_CONST,
         @Query(KEY_PARAM) apiKey: String = API_KEY
     ): ResponseDto
 }

@@ -48,7 +48,7 @@ class LoginScreen : Fragment() {
             } else {
                 errorText.visibility = View.GONE
                 loginButton.isEnabled = true
-                findNavController().navigate(R.id.action_LoginScreen_to_SecondFragment)
+                findNavController().navigate(R.id.action_LoginScreen_to_PostsScreen)
             }
         }
     }

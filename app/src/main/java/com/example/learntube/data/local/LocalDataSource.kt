@@ -5,9 +5,8 @@ import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val searchItemDao: SearchItemDao) {
 
-    suspend fun getAll(searchQuery: String): List<SearchItemEntity> = searchItemDao.getAll(searchQuery)
-
-    suspend fun getAll(): List<SearchItemEntity> = searchItemDao.getAll()
+    suspend fun getAll(searchQuery: String?): List<SearchItemEntity> =
+        searchItemDao.getAll(searchQuery)
 
     suspend fun getById(searchItemId: Long): SearchItemEntity? = searchItemDao.getById(searchItemId)
 

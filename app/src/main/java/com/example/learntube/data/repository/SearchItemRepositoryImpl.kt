@@ -15,18 +15,16 @@ import javax.inject.Singleton
 class SearchItemRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
-): SearchItemRepository {
+) : SearchItemRepository {
     override suspend fun getSearchItems(searchQuery: String?): List<SearchItem> {
-        val localItems: List<SearchItemEntity> = searchQuery?.let {
-            localDataSource.getAll(searchQuery)
-        } ?: emptyList()
-
+        val localItems: List<SearchItemEntity> = localDataSource.getAll(searchQuery)
+        println(localItems)
         return if (localItems.isEmpty()) {
-            val remoteItems = remoteDataSource.fetchItems()
-            localDataSource.save(remoteItems.map { it.toEntity() })
+            val remoteItems = remoteDataSource.fetchItems(searchQuery)
+            localDataSource.save(remoteItems.map { it.toEntity(searchQuery) })
             remoteItems.map { it.toModel() }
         } else {
-            localItems.map {it.toModel() }
+            localItems.map { it.toModel() }
         }
     }
 
@@ -35,7 +33,7 @@ class SearchItemRepositoryImpl @Inject constructor(
 
         return localItem?.toModel() ?: remoteDataSource.fetchSearchItemById(searchItemId)?.let {
             val itemDto = it
-            localDataSource.save(itemDto.toEntity())
+//            localDataSource.save(itemDto.toEntity())
             itemDto.toModel()
         }
     }

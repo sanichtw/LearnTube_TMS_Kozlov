@@ -58,10 +58,11 @@ data class SnippetDto(
     val publishTime: String,
 )
 
-fun SearchItemDto.toEntity() = SearchItemEntity(
+fun SearchItemDto.toEntity(searchQuery: String?) = SearchItemEntity(
     snippet = snippetDto.toEntity(),
     etag = etag,
     kindId = kindId.toEntity(),
+    searchQuery = searchQuery
 )
 
 fun SearchItemDto.toModel() = SearchItem(

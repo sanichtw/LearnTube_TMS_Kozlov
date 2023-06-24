@@ -23,7 +23,7 @@ class SearchItemAdapter(
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.icon)
         val titleTextView: TextView = itemView.findViewById(R.id.title)
-        val publishedAtTextView: TextView = itemView.findViewById(R.id.publishedAt)
+//        val publishedAtTextView: TextView = itemView.findViewById(R.id.publishedAt)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -38,7 +38,7 @@ class SearchItemAdapter(
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.apply {
             titleTextView.text = items[position].snippet.title
-            publishedAtTextView.text = items[position].snippet.publishedAt
+//            publishedAtTextView.text = items[position].snippet.publishedAt
         }
         Glide
             .with(context)
@@ -47,10 +47,11 @@ class SearchItemAdapter(
 
         when (items[position].kindId.kind) {
             "youtube#video" -> holder.imageView.setOnClickListener {
-                event
+                event.invoke(it)
             }
 
             "youtube#playlist" -> holder.imageView.setOnClickListener {
+                event.invoke(it)
                 Toast.makeText(context.requireContext(), "Event2", Toast.LENGTH_SHORT).show()
             }
         }
