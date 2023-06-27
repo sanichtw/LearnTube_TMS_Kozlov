@@ -51,7 +51,6 @@ class PostsScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        println(isSearchQueryExist)
 
         if (!isSearchQueryExist.isNullOrEmpty()) {
             viewModel.searchQueryState = isSearchQueryExist
@@ -62,15 +61,20 @@ class PostsScreen : Fragment() {
         }
 
         binding.searchButton.setOnClickListener {
-            binding.loader?.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
-
             val searchInputText = binding.searchInput.text.toString()
             saveStringToSharedPreferences(searchInputText = searchInputText)
+
+            binding.apply {
+                loader?.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+            }
+
             if (searchInputText.isNotBlank()) {
                 lifecycleScope.launch {
-                    viewModel.searchQueryState = searchInputText
-                    viewModel.getPosts(viewModel.searchQueryState)
+                    viewModel.apply {
+                        searchQueryState = searchInputText
+                        getPosts(viewModel.searchQueryState)
+                    }
                     observePosts()
                 }
             }
@@ -81,16 +85,16 @@ class PostsScreen : Fragment() {
         viewModel.postList.observe(viewLifecycleOwner) { posts ->
             initRecycler(posts)
         }
-        binding.loader?.visibility = View.GONE
-        binding.recyclerView.visibility = View.VISIBLE
+
+        binding.apply {
+            loader?.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+        }
     }
 
     private fun initRecycler(posts: List<SearchItem>) {
-        val customItemDecoration = CustomItemDecoration(requireContext())
-
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-//            addItemDecoration(customItemDecoration)
             adapter = SearchItemAdapter(
                 context = this@PostsScreen,
                 items = posts,
@@ -105,22 +109,20 @@ class PostsScreen : Fragment() {
     }
 
     override fun onDestroy() {
-        println(isSearchQueryExist)
-        super.onDestroy()
-        val sharedPreferences =
-            requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.remove(SEARCH_KEY)
-        editor.apply()
+        requireContext()
+            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            .edit()
+            .remove(SEARCH_KEY)
+            .apply()
+
     }
 
     private fun saveStringToSharedPreferences(searchInputText: String) {
-        val sharedPreferences =
-            requireContext()
-                .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString(SEARCH_KEY, searchInputText)
-        editor.apply()
+        requireContext()
+            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            .edit()
+            .putString(SEARCH_KEY, searchInputText)
+            .apply()
 
     }
 
