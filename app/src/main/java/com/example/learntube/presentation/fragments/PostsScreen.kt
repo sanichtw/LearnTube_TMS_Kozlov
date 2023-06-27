@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,16 +31,18 @@ class PostsScreen : Fragment() {
 
     private var _binding: FragmentPostsScreenBinding? = null
     private val viewModel: SearchItemsViewModel by viewModels()
-
+    private var isSearchQueryExist: String? = null
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var getSearchItemsBySearchQueryUseCase: GetSearchItemsBySearchQueryUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val sharedPreferences =
+            requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        isSearchQueryExist = sharedPreferences.getString(SEARCH_KEY, null)
 
         _binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,13 +51,10 @@ class PostsScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        println(isSearchQueryExist)
 
-        val searchInput = binding.searchInput
-        saveStringToSharedPreferences(searchInput = searchInput)
-
-
-        if (!searchInput.text.isNullOrBlank()) {
-            viewModel.searchQueryState = searchInput.text.toString()
+        if (!isSearchQueryExist.isNullOrEmpty()) {
+            viewModel.searchQueryState = isSearchQueryExist
             lifecycleScope.launch {
                 viewModel.getPosts(viewModel.searchQueryState)
                 observePosts()
@@ -64,21 +64,17 @@ class PostsScreen : Fragment() {
         binding.searchButton.setOnClickListener {
             binding.loader?.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE
-            val searchText = searchInput.text.toString()
 
-            if (searchText.isNotBlank()) {
+            val searchInputText = binding.searchInput.text.toString()
+            saveStringToSharedPreferences(searchInputText = searchInputText)
+            if (searchInputText.isNotBlank()) {
                 lifecycleScope.launch {
-                    viewModel.searchQueryState = searchText
+                    viewModel.searchQueryState = searchInputText
                     viewModel.getPosts(viewModel.searchQueryState)
                     observePosts()
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observePosts() {
@@ -94,36 +90,41 @@ class PostsScreen : Fragment() {
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(customItemDecoration)
+//            addItemDecoration(customItemDecoration)
             adapter = SearchItemAdapter(
                 context = this@PostsScreen,
                 items = posts,
                 event = {
-                    findNavController().navigate(R.id.action_PostsScreen_to_LoginScreen)
+                    findNavController().navigate(R.id.action_PostsScreen_to_InfoFragment)
                 },
                 event2 = {
-                    findNavController().navigate(R.id.action_PostsScreen_to_LoginScreen)
+                    findNavController().navigate(R.id.action_PostsScreen_to_InfoFragment)
                 }
             )
         }
     }
 
-    private fun saveStringToSharedPreferences(searchInput: EditText) {
+    override fun onDestroy() {
+        println(isSearchQueryExist)
+        super.onDestroy()
+        val sharedPreferences =
+            requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove(SEARCH_KEY)
+        editor.apply()
+    }
+
+    private fun saveStringToSharedPreferences(searchInputText: String) {
         val sharedPreferences =
             requireContext()
                 .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        searchInput.text = Editable
-            .Factory
-            .getInstance()
-            .newEditable(sharedPreferences.getString("SearchQuery", ""))
+        val editor = sharedPreferences.edit()
+        editor.putString(SEARCH_KEY, searchInputText)
+        editor.apply()
 
-        searchInput.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    }
 
-            override fun afterTextChanged(s: Editable) {
-                sharedPreferences.edit().putString("SearchQuery", s.toString()).commit()
-            }
-        })
+    companion object {
+        private const val SEARCH_KEY = "searchQuery"
     }
 }

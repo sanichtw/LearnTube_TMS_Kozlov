@@ -23,7 +23,18 @@
         tools:layout="@layout/fragment_posts_screen">
 
         <action
-            android:id="@+id/action_PostsScreen_to_LoginScreen"
-            app:destination="@id/LoginScreen" />
+            android:id="@+id/action_PostsScreen_to_InfoFragment"
+            app:destination="@id/InfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/InfoFragment"
+        android:name="com.example.learntube.presentation.fragments.InfoFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_info">
+
+        <action
+            android:id="@+id/action_InfoFragment_to_PostsScreen"
+            app:destination="@id/InfoFragment" />
     </fragment>
 </navigation>
