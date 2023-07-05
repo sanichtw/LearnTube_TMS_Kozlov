@@ -1,9 +1,6 @@
 package com.example.learntube.domain.models
 
-import androidx.room.PrimaryKey
-import com.example.learntube.data.remote.dto.ThumbnailsDto
-
-data class Snippet (
+data class Snippet(
     val publishedAt: String,
 
     val channelId: String,

@@ -31,18 +31,17 @@ class PostsScreen : Fragment() {
 
     private var _binding: FragmentPostsScreenBinding? = null
     private val viewModel: SearchItemsViewModel by viewModels()
-    private var isSearchQueryExist: String? = null
     private val binding get() = _binding!!
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        val sharedPreferences =
-            requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        isSearchQueryExist = sharedPreferences.getString(SEARCH_KEY, null)
+//        val sharedPreferences =
+//            requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+//        isSearchQueryExist = sharedPreferences.getString(SEARCH_KEY, null)
 
         _binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
         return binding.root
@@ -52,8 +51,7 @@ class PostsScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!isSearchQueryExist.isNullOrEmpty()) {
-            viewModel.searchQueryState = isSearchQueryExist
+        if (!viewModel.searchQueryState.isNullOrBlank()) {
             lifecycleScope.launch {
                 viewModel.getPosts(viewModel.searchQueryState)
                 observePosts()
@@ -62,7 +60,7 @@ class PostsScreen : Fragment() {
 
         binding.searchButton.setOnClickListener {
             val searchInputText = binding.searchInput.text.toString()
-            saveStringToSharedPreferences(searchInputText = searchInputText)
+//            saveStringToSharedPreferences(searchInputText = searchInputText)
 
             binding.apply {
                 loader?.visibility = View.VISIBLE
@@ -109,22 +107,23 @@ class PostsScreen : Fragment() {
     }
 
     override fun onDestroy() {
-        requireContext()
-            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-            .edit()
-            .remove(SEARCH_KEY)
-            .apply()
+        super.onDestroy()
+//        requireContext()
+//            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+//            .edit()
+//            .remove(SEARCH_KEY)
+//            .apply()
 
     }
 
-    private fun saveStringToSharedPreferences(searchInputText: String) {
-        requireContext()
-            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-            .edit()
-            .putString(SEARCH_KEY, searchInputText)
-            .apply()
-
-    }
+//    private fun saveStringToSharedPreferences(searchInputText: String) {
+//        requireContext()
+//            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+//            .edit()
+//            .putString(SEARCH_KEY, searchInputText)
+//            .apply()
+//
+//    }
 
     companion object {
         private const val SEARCH_KEY = "searchQuery"

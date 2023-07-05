@@ -1,6 +1,5 @@
 package com.example.learntube.domain.models
 
-import androidx.room.ColumnInfo
 import com.example.learntube.data.local.entity.IdEntity
 
 data class Id(

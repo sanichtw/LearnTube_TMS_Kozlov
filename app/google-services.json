@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "399941692890",
+    "project_id": "learntube-390217",
+    "storage_bucket": "learntube-390217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399941692890:android:e58d6c3d69eb296478a4e3",
+        "android_client_info": {
+          "package_name": "com.example.learntube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399941692890-iju16hiqkaioq5h280t38amqeuiu4a8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYQfav6ZQgQ_efLzj6LpK2jf8Fz4yxGek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399941692890-iju16hiqkaioq5h280t38amqeuiu4a8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,7 @@ package com.example.learntube.di.modules
 import com.example.learntube.data.repository.SearchItemRepositoryImpl
 import com.example.learntube.domain.use_cases.GetSearchItemByIdUseCase
 import com.example.learntube.domain.use_cases.GetSearchItemsBySearchQueryUseCase
+import com.example.learntube.domain.use_cases.SetToFavouriteVideosUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,4 +19,8 @@ class UseCasesModule {
     @Provides
     fun provideSearchItemsBySearch(searchItemRepository: SearchItemRepositoryImpl): GetSearchItemsBySearchQueryUseCase =
         GetSearchItemsBySearchQueryUseCase(searchItemRepository = searchItemRepository)
+
+    @Provides
+    fun provideSetToFavouriteVideos(searchItemRepository: SearchItemRepositoryImpl): SetToFavouriteVideosUseCase =
+        SetToFavouriteVideosUseCase(searchItemRepository = searchItemRepository)
 }

@@ -1,6 +1,7 @@
 package com.example.learntube.data.repository
 
 import com.example.learntube.data.local.LocalDataSource
+import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
 import com.example.learntube.data.local.entity.toModel
 import com.example.learntube.data.remote.RemoteDataSource
@@ -37,4 +38,14 @@ class SearchItemRepositoryImpl @Inject constructor(
             itemDto.toModel()
         }
     }
+
+    override suspend fun getFavouriteItems(): List<FavouriteItemEntity> {
+        TODO()
+    }
+
+    override suspend fun setToFavouriteVideo(favouriteVideo: FavouriteItemEntity) {
+        localDataSource.setToFavouriteVideo(favouriteVideo = favouriteVideo)
+    }
+
+
 }

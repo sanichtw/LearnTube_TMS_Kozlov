@@ -1,17 +1,14 @@
 package com.example.learntube.presentation.adapters
 
-import android.content.res.Resources
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.Resource
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.learntube.R
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.presentation.fragments.PostsScreen
@@ -44,6 +41,7 @@ class SearchItemAdapter(
             titleTextView.text = items[position].snippet.title
 //            publishedAtTextView.text = items[position].snippet.publishedAt
         }
+
         Glide
             .with(context)
             .load(items[position].snippet.thumbnails.default?.url)
@@ -51,12 +49,30 @@ class SearchItemAdapter(
 
         when (items[position].kindId.kind) {
             "youtube#video" -> holder.imageView.setOnClickListener {
-                event.invoke(it)
+//                event.invoke(it)
+                val videoId = items[position].kindId.videoId
+                println(videoId)
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.youtube.com/watch?v=$videoId")
+                )
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.setPackage("com.google.android.youtube")
+                context.startActivity(intent)
             }
 
             "youtube#playlist" -> holder.imageView.setOnClickListener {
-                event.invoke(it)
-                Toast.makeText(context.requireContext(), "Event2", Toast.LENGTH_SHORT).show()
+//                event.invoke(it)
+//                Toast.makeText(context.requireContext(), "Event2", Toast.LENGTH_SHORT).show()
+                val playlistId = items[position].kindId.playlistId
+                println(playlistId)
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.youtube.com/playlist?list=$playlistId")
+                )
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.setPackage("com.google.android.youtube")
+                context.startActivity(intent)
             }
         }
     }

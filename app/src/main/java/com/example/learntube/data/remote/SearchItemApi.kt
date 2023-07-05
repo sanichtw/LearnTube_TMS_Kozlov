@@ -19,6 +19,9 @@ interface SearchItemApi {
 
         const val KEY_PARAM = "key"
         const val API_KEY = "AIzaSyCUMVXuscyGvyEzOJuTPPCOFNQunaDsWIA"
+
+        const val TYPE_PARAM = "type"
+        val TYPE_CONST = listOf("video", "playlist")
     }
 
     @GET(GET_POSTS_REQUEST)
@@ -26,6 +29,8 @@ interface SearchItemApi {
         @Query(PART_PARAM) part: String = PART_CONST,
         @Query(QUERY_RESULT) maxResults: Int = QUERY_RESULT_CONST,
         @Query(QUERY_PARAM) text: String? = QUERY_CONST,
+        @Query(TYPE_PARAM) firstType: String = TYPE_CONST[0],
+        @Query(TYPE_PARAM) secondType: String = TYPE_CONST[1],
         @Query(KEY_PARAM) apiKey: String = API_KEY
     ): ResponseDto
 }

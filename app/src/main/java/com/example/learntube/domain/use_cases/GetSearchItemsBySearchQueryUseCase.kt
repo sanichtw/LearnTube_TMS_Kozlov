@@ -11,5 +11,4 @@ class GetSearchItemsBySearchQueryUseCase @Inject constructor(
 ) {
     suspend fun getSearchItemsBySearchQuery(searchQuery: String?): List<SearchItem> =
         searchItemRepository.getSearchItems(searchQuery)
-
 }
