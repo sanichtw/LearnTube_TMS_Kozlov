@@ -1,14 +1,12 @@
 package com.example.learntube.presentation.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
+import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,13 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learntube.R
 import com.example.learntube.databinding.FragmentPostsScreenBinding
 import com.example.learntube.domain.models.SearchItem
-import com.example.learntube.domain.use_cases.GetSearchItemsBySearchQueryUseCase
-import com.example.learntube.presentation.adapters.ItemDecoration.CustomItemDecoration
 import com.example.learntube.presentation.adapters.SearchItemAdapter
 import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlin.math.abs
 
 
 @AndroidEntryPoint
@@ -39,10 +35,6 @@ class PostsScreen : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-//        val sharedPreferences =
-//            requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-//        isSearchQueryExist = sharedPreferences.getString(SEARCH_KEY, null)
-
         _binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,6 +42,8 @@ class PostsScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        bindDrawer()
 
         if (!viewModel.searchQueryState.isNullOrBlank()) {
             lifecycleScope.launch {
@@ -60,10 +54,9 @@ class PostsScreen : Fragment() {
 
         binding.searchButton.setOnClickListener {
             val searchInputText = binding.searchInput.text.toString()
-//            saveStringToSharedPreferences(searchInputText = searchInputText)
 
             binding.apply {
-                loader?.visibility = View.VISIBLE
+                loader.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
             }
 
@@ -71,7 +64,7 @@ class PostsScreen : Fragment() {
                 lifecycleScope.launch {
                     viewModel.apply {
                         searchQueryState = searchInputText
-                        getPosts(viewModel.searchQueryState)
+                        getPosts(searchQueryState)
                     }
                     observePosts()
                 }
@@ -85,7 +78,7 @@ class PostsScreen : Fragment() {
         }
 
         binding.apply {
-            loader?.visibility = View.GONE
+            loader.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
     }
@@ -106,24 +99,35 @@ class PostsScreen : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        requireContext()
-//            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-//            .edit()
-//            .remove(SEARCH_KEY)
-//            .apply()
+    private fun bindDrawer() {
+        val gestureDetector = GestureDetectorCompat(
+            requireContext(),
+            object : GestureDetector.SimpleOnGestureListener() {
+                override fun onFling(
+                    e1: MotionEvent,
+                    e2: MotionEvent,
+                    velocityX: Float,
+                    velocityY: Float
+                ): Boolean {
+                    // Определение направления свайпа
+                    val distanceX = e2.x
+                    val distanceY = e2.y
 
+                    if (distanceX > 0 && abs(distanceX) > abs(distanceY)) {
+                        // Свайп вправо
+                        binding.drawerLayout.openDrawer(binding.drawer)
+                        return true
+                    }
+
+                    return super.onFling(e1, e2, velocityX, velocityY)
+                }
+            })
+
+        // Прикрепление обработчика жестов к DrawerLayout
+        binding.drawerLayout.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+        }
     }
-
-//    private fun saveStringToSharedPreferences(searchInputText: String) {
-//        requireContext()
-//            .getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-//            .edit()
-//            .putString(SEARCH_KEY, searchInputText)
-//            .apply()
-//
-//    }
 
     companion object {
         private const val SEARCH_KEY = "searchQuery"

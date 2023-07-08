@@ -5,4 +5,3 @@ data class SearchItem(
     val etag: String,
     val kindId: Id
 )
-

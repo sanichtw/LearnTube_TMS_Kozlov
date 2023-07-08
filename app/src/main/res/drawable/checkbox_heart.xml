@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#FF0000" /> <!-- Красный цвет -->
+            <corners android:radius="8dp" /> <!-- Закругленные углы -->
+        </shape>
+    </item>
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#FF0000" /> <!-- Белый цвет -->
+            <stroke
+                android:width="2dp"
+                android:color="#0000FF" /> <!-- Синий цвет рамки -->
+            <corners android:radius="8dp" /> <!-- Закругленные углы -->
+        </shape>
+    </item>
+</selector>

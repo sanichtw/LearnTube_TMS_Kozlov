@@ -43,8 +43,10 @@ class SearchItemRepositoryImpl @Inject constructor(
         TODO()
     }
 
-    override suspend fun setToFavouriteVideo(favouriteVideo: FavouriteItemEntity) {
-        localDataSource.setToFavouriteVideo(favouriteVideo = favouriteVideo)
+    override suspend fun setToFavouriteVideo(favouriteVideo: SearchItem) {
+        val toSearchItem = favouriteVideo
+
+//        localDataSource.setToFavouriteVideo(favouriteVideo = favouriteVideo)
     }
 
 

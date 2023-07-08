@@ -11,5 +11,5 @@ interface SearchItemRepository {
 
     suspend fun getFavouriteItems(): List<FavouriteItemEntity>?
 
-    suspend fun setToFavouriteVideo(favouriteVideo: FavouriteItemEntity)
+    suspend fun setToFavouriteVideo(favouriteVideo: SearchItem)
 }

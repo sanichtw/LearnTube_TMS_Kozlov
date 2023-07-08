@@ -2,6 +2,7 @@ package com.example.learntube.data.local
 
 import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
+import com.example.learntube.domain.models.SearchItem
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(private val searchItemDao: SearchItemDao) {

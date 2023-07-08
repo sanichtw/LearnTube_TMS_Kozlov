@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
+import com.example.learntube.domain.models.SearchItem
 
 @Dao
 interface SearchItemDao {

@@ -25,7 +25,7 @@ class SearchItemsViewModel @Inject constructor(
         _postList.postValue(getPostsUseCase.getSearchItemsBySearchQuery(searchText))
     }
 
-    suspend fun setToFavouriteVideos(favouriteVideo: FavouriteItemEntity) {
+    suspend fun setToFavouriteVideos(favouriteVideo: SearchItem) {
         setToFavouriteVideoUseCase.setToFavouriteVideo(favouriteVideo = favouriteVideo)
     }
 }
