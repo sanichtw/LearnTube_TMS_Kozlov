@@ -16,4 +16,6 @@ data class Snippet(
     val liveBroadcastContent: String,
 
     val publishTime: String,
+
+    val isFavourite: Boolean = false
 )

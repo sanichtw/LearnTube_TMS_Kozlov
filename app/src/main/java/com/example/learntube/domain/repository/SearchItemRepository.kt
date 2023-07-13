@@ -9,7 +9,7 @@ interface SearchItemRepository {
 
     suspend fun getSearchItemById(searchItemId: Long): SearchItem?
 
-    suspend fun getFavouriteItems(): List<FavouriteItemEntity>?
+    suspend fun getFavouriteItems(): List<FavouriteItemEntity>
 
     suspend fun setToFavouriteVideo(favouriteVideo: SearchItem)
 }

@@ -25,7 +25,7 @@ data class SearchItemEntity(
     val searchQuery: String?
 )
 
-fun SearchItemEntity.toModel() = SearchItem(
+internal fun SearchItemEntity.toModel() = SearchItem(
     snippet = snippet.toModel(),
     etag = etag,
     kindId = kindId.toModel(),

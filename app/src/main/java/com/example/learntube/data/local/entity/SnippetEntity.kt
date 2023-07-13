@@ -38,6 +38,9 @@ data class SnippetEntity(
 
     @ColumnInfo("publishTime")
     var publishTime: String,
+
+    @ColumnInfo(name = "isFavourite")
+    var isFavourite: Boolean = false
 )
 
 fun SnippetEntity.toModel() = Snippet(
@@ -49,4 +52,5 @@ fun SnippetEntity.toModel() = Snippet(
     thumbnails = thumbnails.toModel(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime,
+    isFavourite = isFavourite
 )

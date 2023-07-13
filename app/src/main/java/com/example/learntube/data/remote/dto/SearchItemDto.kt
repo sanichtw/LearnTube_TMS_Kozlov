@@ -3,6 +3,7 @@ package com.example.learntube.data.remote.dto
 import com.example.learntube.data.local.entity.IdEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
 import com.example.learntube.data.local.entity.SnippetEntity
+import com.example.learntube.domain.models.Id
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.domain.models.Snippet
 import com.google.gson.annotations.SerializedName
@@ -100,7 +101,7 @@ fun IdDto.toEntity() = IdEntity(
     channelId = channelId
 )
 
-fun IdDto.toModel() = com.example.learntube.domain.models.Id(
+fun IdDto.toModel() = Id(
     kind = kind,
     playlistId = playlistId,
     videoId = videoId,

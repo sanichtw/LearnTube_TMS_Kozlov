@@ -26,29 +26,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/search_input"
-                android:layout_width="329dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/search_input_background"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView"
+                android:hint="Select course"
                 android:fontFamily="@font/alata"
-                android:padding="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/search_button"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:padding="12dp"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                android:background="@android:drawable/editbox_background"
+                />
 
-            <ImageButton
-                android:id="@+id/search_button"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/search_button_rounded"
-                android:src="@drawable/search_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/search_input"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/search_input"
-                app:layout_constraintTop_toTopOf="@+id/search_input" />
+<!--            <EditText-->
+<!--                android:id="@+id/search_input"-->
+<!--                android:layout_width="329dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/search_input_background"-->
+<!--                android:fontFamily="@font/alata"-->
+<!--                android:padding="10dp"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/search_button"-->
+<!--                app:layout_constraintHorizontal_bias="0"-->
+<!--                app:layout_constraintHorizontal_chainStyle="packed"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/search_button"-->
+<!--                android:layout_width="64dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:background="@drawable/search_button_rounded"-->
+<!--                android:src="@drawable/search_icon"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/search_input"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/search_input"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/search_input" />-->
 
         </LinearLayout>
 

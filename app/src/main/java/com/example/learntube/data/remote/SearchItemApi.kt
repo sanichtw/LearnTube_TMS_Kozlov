@@ -1,11 +1,12 @@
 package com.example.learntube.data.remote
 
+import com.example.learntube.BuildConfig
 import com.example.learntube.data.remote.dto.ResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SearchItemApi {
-    companion object {
+    private companion object {
         const val GET_POSTS_REQUEST = "search"
 
         const val PART_PARAM = "part"
@@ -18,7 +19,7 @@ interface SearchItemApi {
         const val QUERY_RESULT_CONST = 50
 
         const val KEY_PARAM = "key"
-        const val API_KEY = "AIzaSyCUMVXuscyGvyEzOJuTPPCOFNQunaDsWIA"
+        const val API_KEY = BuildConfig.YOUTUBE_API_TOKEN
 
         const val TYPE_PARAM = "type"
         val TYPE_CONST = listOf("video", "playlist")
