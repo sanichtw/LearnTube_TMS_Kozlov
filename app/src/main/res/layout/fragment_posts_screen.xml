@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"
-                android:hint="Select course"
+                android:hint="@string/select_course"
                 android:fontFamily="@font/alata"
                 android:padding="12dp"
                 android:gravity="center_vertical"
@@ -88,7 +88,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Шторка -->
-    <View
+    <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/drawer"
         android:layout_width="240dp"
@@ -96,7 +96,19 @@
         android:layout_gravity="start"
         android:background="@android:color/white">
         <!-- Содержимое шторки -->
-    </View>
+
+        <TextView
+            android:id="@+id/textViewDrawer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/favourite"
+            android:fontFamily="@font/alata"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
 

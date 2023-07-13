@@ -1,6 +1,6 @@
 package com.example.learntube.data.repository
 
-import com.example.learntube.BuildConfig
+import android.util.Log
 import com.example.learntube.data.local.LocalDataSource
 import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
@@ -9,6 +9,7 @@ import com.example.learntube.data.remote.RemoteDataSource
 import com.example.learntube.data.remote.dto.toEntity
 import com.example.learntube.data.remote.dto.toModel
 import com.example.learntube.domain.models.SearchItem
+import com.example.learntube.domain.models.toEntity
 import com.example.learntube.domain.repository.SearchItemRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,6 +20,8 @@ class SearchItemRepositoryImpl @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : SearchItemRepository {
     override suspend fun getSearchItems(searchQuery: String?): List<SearchItem> {
+        Log.d("Test Adapter", "Called getSearchItems function")
+
         val localItems: List<SearchItemEntity> = localDataSource.getAll(searchQuery)
         println(localItems)
         return if (localItems.isEmpty()) {
@@ -44,10 +47,10 @@ class SearchItemRepositoryImpl @Inject constructor(
         TODO()
     }
 
-    override suspend fun setToFavouriteVideo(favouriteVideo: SearchItem) {
-        val toSearchItem = favouriteVideo
-
-//        localDataSource.setToFavouriteVideo(favouriteVideo = favouriteVideo)
+    override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) {
+        val mappedToEntityFavouriteVideo = favouriteVideo.toEntity()
+        localDataSource.setVideoAsFavorite(mappedToEntityFavouriteVideo)
+        Log.d("Test Adapter", "Called setVideoAsFavourite function")
     }
 
 

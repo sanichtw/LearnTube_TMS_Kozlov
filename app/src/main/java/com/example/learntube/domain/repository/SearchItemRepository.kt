@@ -1,6 +1,7 @@
 package com.example.learntube.domain.repository
 
 import com.example.learntube.data.local.entity.FavouriteItemEntity
+import com.example.learntube.data.local.entity.SearchItemEntity
 import com.example.learntube.domain.models.SearchItem
 
 interface SearchItemRepository {
@@ -11,5 +12,5 @@ interface SearchItemRepository {
 
     suspend fun getFavouriteItems(): List<FavouriteItemEntity>
 
-    suspend fun setToFavouriteVideo(favouriteVideo: SearchItem)
+    suspend fun setVideoAsFavorite(favouriteVideo: SearchItem)
 }

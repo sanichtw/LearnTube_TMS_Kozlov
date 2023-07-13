@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -18,6 +19,7 @@ import android.widget.ListView
 import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learntube.R
@@ -27,6 +29,7 @@ import com.example.learntube.presentation.adapters.SearchItemAdapter
 import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.math.abs
 
 
@@ -37,7 +40,6 @@ class PostsScreen : Fragment() {
     private val viewModel: SearchItemsViewModel by viewModels()
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,19 +49,22 @@ class PostsScreen : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val textView = binding.textView
+
+        Log.d("Test Adapter", "PostsScreens View Created")
+
 
         if (!viewModel.searchQueryState.isNullOrBlank()) {
             textView.text = viewModel.searchQueryState
             lifecycleScope.launch {
                 viewModel.getPosts(viewModel.searchQueryState)
                 observePosts()
+                Log.d("Test Adapter", "SearchQuery is not blank")
+
             }
         }
-
         bindDrawer()
 
         val listOfCourses = mutableListOf<String>()
@@ -120,6 +125,8 @@ class PostsScreen : Fragment() {
                                 searchQueryState = searchInputText
                                 getPosts(searchQueryState)
                             }
+                            Log.d("Test Adapter", "ListView was clicked")
+
                             observePosts()
                         }
                     }
@@ -129,8 +136,9 @@ class PostsScreen : Fragment() {
     }
 
     private fun observePosts() {
-        viewModel.postList.observe(viewLifecycleOwner) { posts ->
+        viewModel.postList.distinctUntilChanged().observe(viewLifecycleOwner) { posts ->
             initRecycler(posts)
+            Log.d("Test Adapter", "Got Live Data")
         }
 
         binding.apply {
@@ -139,12 +147,15 @@ class PostsScreen : Fragment() {
         }
     }
 
-    private fun initRecycler(posts: List<SearchItem>) {
+    private fun initRecycler(searchItems: List<SearchItem>) {
+        Log.d("Test Adapter", "Init Recycler")
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = SearchItemAdapter(
-                context = this@PostsScreen,
-                items = posts,
+                context = requireContext(),
+                searchItems = searchItems,
+                viewModel = viewModel
             )
         }
     }

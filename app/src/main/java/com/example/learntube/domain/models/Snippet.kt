@@ -1,5 +1,7 @@
 package com.example.learntube.domain.models
 
+import com.example.learntube.data.local.entity.SnippetEntity
+
 data class Snippet(
     val publishedAt: String,
 
@@ -17,5 +19,17 @@ data class Snippet(
 
     val publishTime: String,
 
-    val isFavourite: Boolean = false
+    var isFavourite: Boolean = false
+)
+
+fun Snippet.toEntity() = SnippetEntity(
+    publishedAt = publishedAt,
+    channelId = channelId,
+    title = title,
+    description = description,
+    channelTitle = channelTitle,
+    thumbnails = thumbnails.toEntity(),
+    liveBroadcastContent = liveBroadcastContent,
+    publishTime = publishTime,
+    isFavourite = isFavourite
 )

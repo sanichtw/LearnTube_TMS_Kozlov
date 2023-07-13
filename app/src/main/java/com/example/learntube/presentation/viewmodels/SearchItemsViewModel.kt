@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.domain.use_cases.GetSearchItemsBySearchQueryUseCase
-import com.example.learntube.domain.use_cases.SetToFavouriteVideosUseCase
+import com.example.learntube.domain.use_cases.SetVideoAsFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchItemsViewModel @Inject constructor(
     private val getPostsUseCase: GetSearchItemsBySearchQueryUseCase,
-    private val setToFavouriteVideoUseCase: SetToFavouriteVideosUseCase
+    private val setToFavouriteVideoUseCase: SetVideoAsFavoriteUseCase
 ) : ViewModel() {
 
     private val _postList = MutableLiveData<List<SearchItem>>()
@@ -24,7 +24,7 @@ class SearchItemsViewModel @Inject constructor(
         _postList.postValue(getPostsUseCase.getSearchItemsBySearchQuery(searchText))
     }
 
-    suspend fun setToFavouriteVideos(favouriteVideo: SearchItem) {
-        setToFavouriteVideoUseCase.setToFavouriteVideo(favouriteVideo = favouriteVideo)
+    suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) {
+        setToFavouriteVideoUseCase.setVideoAsFavorite(favouriteVideo = favouriteVideo)
     }
 }
