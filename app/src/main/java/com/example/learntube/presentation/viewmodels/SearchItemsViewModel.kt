@@ -3,7 +3,6 @@ package com.example.learntube.presentation.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.domain.use_cases.GetSearchItemsBySearchQueryUseCase
 import com.example.learntube.domain.use_cases.SetToFavouriteVideosUseCase
