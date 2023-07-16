@@ -19,6 +19,7 @@ import com.example.learntube.domain.use_cases.SetVideoAsFavoriteUseCase
 import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,37 +48,34 @@ class SearchItemAdapter(
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+        val item = searchItems[position]
         Log.d(
             "Test Adapter",
-            "${searchItems[position].snippet.title}: is favourite ${searchItems[position].snippet.isFavourite}"
+            "${item.snippet.title}: is favourite ${item.snippet.isFavourite}"
         )
         Log.d("Test Adapter", "____________________________")
 
         holder.apply {
-            titleTextView.text = searchItems[position].snippet.title
+            titleTextView.text = item.snippet.title
 //            publishedAtTextView.text = items[position].snippet.publishedAt
 
             checkBox.apply {
-                isChecked = searchItems[position].snippet.isFavourite
+                isChecked = item.snippet.isFavourite
 
                 setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            searchItems[position].snippet.isFavourite = true
-                            viewModel.setVideoAsFavorite(searchItems[position])
-                        }
-                        Toast.makeText(context, "Checked", Toast.LENGTH_SHORT).show()
-
-                    } else {
-                        Toast.makeText(context, "unChecked", Toast.LENGTH_SHORT).show()
+                    GlobalScope.launch {
+                        item.snippet.isFavourite = isChecked
+                        viewModel.setVideoAsFavorite(item)
+//                        notifyDataSetChanged()
                     }
+                    Toast.makeText(context, "Checked $isChecked", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        when (searchItems[position].kindId.kind) {
+        when (item.kindId.kind) {
             "youtube#video" -> holder.itemView.setOnClickListener {
-                val videoId = searchItems[position].kindId.videoId
+                val videoId = item.kindId.videoId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -89,7 +87,7 @@ class SearchItemAdapter(
             }
 
             "youtube#playlist" -> holder.itemView.setOnClickListener {
-                val playlistId = searchItems[position].kindId.playlistId
+                val playlistId = item.kindId.playlistId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -103,7 +101,7 @@ class SearchItemAdapter(
 
         Glide
             .with(context)
-            .load(searchItems[position].snippet.thumbnails.high?.url)
+            .load(item.snippet.thumbnails.high?.url)
             .into(holder.imageView)
     }
 

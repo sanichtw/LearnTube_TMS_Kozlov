@@ -5,9 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
-import com.example.learntube.domain.models.SearchItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SearchItemDao {
@@ -20,10 +19,10 @@ interface SearchItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(searchItems: List<SearchItemEntity>)
 
-    @Query("SELECT * FROM FavouriteItemEntity")
-    suspend fun getFavouriteItems(): List<FavouriteItemEntity>
+//    @Query("SELECT * FROM FavouriteItemEntity")
+//    suspend fun getFavouriteItems(): List<FavouriteItemEntity>
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setVideoAsFavorite(favouriteVideo: SearchItemEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

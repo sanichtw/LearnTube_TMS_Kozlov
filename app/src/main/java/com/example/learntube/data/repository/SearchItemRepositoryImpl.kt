@@ -2,7 +2,6 @@ package com.example.learntube.data.repository
 
 import android.util.Log
 import com.example.learntube.data.local.LocalDataSource
-import com.example.learntube.data.local.entity.FavouriteItemEntity
 import com.example.learntube.data.local.entity.SearchItemEntity
 import com.example.learntube.data.local.entity.toModel
 import com.example.learntube.data.remote.RemoteDataSource
@@ -26,9 +25,11 @@ class SearchItemRepositoryImpl @Inject constructor(
         println(localItems)
         return if (localItems.isEmpty()) {
             val remoteItems = remoteDataSource.fetchItems(searchQuery)
+            println("printLn local: $remoteItems")
             localDataSource.save(remoteItems.map { it.toEntity(searchQuery) })
             remoteItems.map { it.toModel() }
         } else {
+            println("printLn local: $localItems")
             localItems.map { it.toModel() }
         }
     }
@@ -43,11 +44,12 @@ class SearchItemRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getFavouriteItems(): List<FavouriteItemEntity> {
-        TODO()
-    }
+//    override suspend fun getFavouriteItems(): List<FavouriteItemEntity> {
+//        TODO()
+//    }
 
     override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) {
+        println("saving item: $favouriteVideo")
         val mappedToEntityFavouriteVideo = favouriteVideo.toEntity()
         localDataSource.setVideoAsFavorite(mappedToEntityFavouriteVideo)
         Log.d("Test Adapter", "Called setVideoAsFavourite function")

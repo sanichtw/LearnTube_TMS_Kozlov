@@ -1,8 +1,7 @@
 package com.example.learntube.domain.repository
 
-import com.example.learntube.data.local.entity.FavouriteItemEntity
-import com.example.learntube.data.local.entity.SearchItemEntity
 import com.example.learntube.domain.models.SearchItem
+import kotlinx.coroutines.flow.Flow
 
 interface SearchItemRepository {
 
@@ -10,7 +9,7 @@ interface SearchItemRepository {
 
     suspend fun getSearchItemById(searchItemId: Long): SearchItem?
 
-    suspend fun getFavouriteItems(): List<FavouriteItemEntity>
+//    suspend fun getFavouriteItems(): List<FavouriteItemEntity>
 
     suspend fun setVideoAsFavorite(favouriteVideo: SearchItem)
 }

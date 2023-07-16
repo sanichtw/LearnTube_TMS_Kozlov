@@ -6,11 +6,11 @@ import com.example.learntube.data.local.entity.SearchItemEntity
 data class SearchItem(
     val snippet: Snippet,
     val etag: String,
-    val kindId: Id
+    val kindId: Id,
 )
 
 fun SearchItem.toEntity() = SearchItemEntity(
     snippet = snippet.toEntity(),
     etag = etag,
-    kindId = kindId.toEntity()
+    kindId = kindId.toEntity(),
 )

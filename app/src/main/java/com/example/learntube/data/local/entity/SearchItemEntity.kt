@@ -22,7 +22,7 @@ data class SearchItemEntity(
     val kindId: IdEntity,
 
     @ColumnInfo("searchQuery")
-    val searchQuery: String? = null
+    var searchQuery: String? = null,
 )
 
 internal fun SearchItemEntity.toModel() = SearchItem(

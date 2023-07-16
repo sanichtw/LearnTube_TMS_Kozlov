@@ -19,7 +19,6 @@ class SearchItemsViewModel @Inject constructor(
     val postList: LiveData<List<SearchItem>> = _postList
     var searchQueryState: String? = null
 
-
     suspend fun getPosts(searchText: String?) {
         _postList.postValue(getPostsUseCase.getSearchItemsBySearchQuery(searchText))
     }
