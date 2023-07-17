@@ -115,8 +115,7 @@ class PostsScreen : Fragment() {
                     start: Int,
                     count: Int,
                     after: Int
-                ) {
-                }
+                ) {}
 
                 override fun afterTextChanged(s: Editable?) {}
 
