@@ -63,7 +63,7 @@ class SearchItemAdapter(
                 isChecked = item.snippet.isFavourite
 
                 setOnCheckedChangeListener { _, isChecked ->
-                    GlobalScope.launch {
+                    CoroutineScope(Dispatchers.Main).launch {
                         item.snippet.isFavourite = isChecked
                         viewModel.setVideoAsFavorite(item)
 //                        notifyDataSetChanged()

@@ -10,6 +10,7 @@ import com.example.learntube.data.remote.dto.toModel
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.domain.models.toEntity
 import com.example.learntube.domain.repository.SearchItemRepository
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +24,11 @@ class SearchItemRepositoryImpl @Inject constructor(
 
         val localItems: List<SearchItemEntity> = localDataSource.getAll(searchQuery)
         println(localItems)
+
+        runBlocking {
+            println(localItems)
+        }
+
         return if (localItems.isEmpty()) {
             val remoteItems = remoteDataSource.fetchItems(searchQuery)
             println("printLn local: $remoteItems")
