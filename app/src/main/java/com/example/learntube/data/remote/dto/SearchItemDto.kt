@@ -66,10 +66,11 @@ fun SearchItemDto.toEntity(searchQuery: String?) = SearchItemEntity(
     searchQuery = searchQuery
 )
 
-fun SearchItemDto.toModel() = SearchItem(
+fun SearchItemDto.toModel(searchQuery: String?) = SearchItem(
     snippet = snippetDto.toModel(),
     etag = etag,
-    kindId = kindId.toModel()
+    kindId = kindId.toModel(),
+    searchQuery = searchQuery
 )
 
 fun SnippetDto.toEntity() = SnippetEntity(

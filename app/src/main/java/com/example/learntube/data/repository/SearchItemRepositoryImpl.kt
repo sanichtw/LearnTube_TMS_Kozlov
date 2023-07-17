@@ -33,26 +33,16 @@ class SearchItemRepositoryImpl @Inject constructor(
             val remoteItems = remoteDataSource.fetchItems(searchQuery)
             println("printLn local: $remoteItems")
             localDataSource.save(remoteItems.map { it.toEntity(searchQuery) })
-            remoteItems.map { it.toModel() }
+            remoteItems.map { it.toModel(searchQuery) }
         } else {
             println("printLn local: $localItems")
-            localItems.map { it.toModel() }
+            localItems.map { it.toModel(searchQuery) }
         }
     }
 
-    override suspend fun getSearchItemById(searchItemId: Long): SearchItem? {
-        val localItem = localDataSource.getById(searchItemId)
-
-        return localItem?.toModel() ?: remoteDataSource.fetchSearchItemById(searchItemId)?.let {
-            val itemDto = it
-//            localDataSource.save(itemDto.toEntity())
-            itemDto.toModel()
-        }
+    override suspend fun getSearchItemById(etag: String): SearchItem? {
+        TODO()
     }
-
-//    override suspend fun getFavouriteItems(): List<FavouriteItemEntity> {
-//        TODO()
-//    }
 
     override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) {
         println("saving item: $favouriteVideo")

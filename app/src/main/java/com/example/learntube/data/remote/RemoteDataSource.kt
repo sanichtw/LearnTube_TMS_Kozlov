@@ -7,5 +7,5 @@ class RemoteDataSource @Inject constructor(private val searchItemApi: SearchItem
     suspend fun fetchItems(searchQuery: String?): List<SearchItemDto> =
         searchItemApi.getSearchItems(text = searchQuery).items
 
-    suspend fun fetchSearchItemById(searchItemId: Long): SearchItemDto = TODO()
+    suspend fun fetchSearchItemById(etag: String): SearchItemDto = TODO()
 }

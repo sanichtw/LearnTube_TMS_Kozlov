@@ -19,11 +19,11 @@ class SearchItemInfoViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getPostInfo()
+            getPostInfo("empty")
         }
     }
 
-    private suspend fun getPostInfo() {
-        _searchItemInfo.value = getSearchItemByIdUseCase.getSearchItemById(3)
+    private suspend fun getPostInfo(etag: String) {
+        _searchItemInfo.value = getSearchItemByIdUseCase.getSearchItemById(etag)
     }
 }
