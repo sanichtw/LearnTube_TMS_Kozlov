@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.learntube.R
 import com.example.learntube.databinding.FragmentLoginScreenBinding
@@ -45,7 +46,17 @@ class LoginScreen : Fragment() {
             } else {
                 errorText.visibility = View.GONE
                 loginButton.isEnabled = true
-                findNavController().navigate(R.id.action_LoginScreen_to_PostsScreen)
+
+                val navOptions = NavOptions.Builder()
+                    .setEnterAnim(R.anim.slide_up)
+                    .setExitAnim(R.anim.slide_down)
+                    .build()
+
+                findNavController().navigate(
+                    R.id.action_LoginScreen_to_PostsScreen,
+                    null,
+                    navOptions
+                )
             }
         }
     }
