@@ -22,7 +22,7 @@ data class SearchItemEntity(
     var searchQuery: String? = "",
 )
 
-internal fun SearchItemEntity.toModel(searchQuery: String?) = SearchItem(
+fun SearchItemEntity.toModel(searchQuery: String? = "") = SearchItem(
     snippet = snippet.toModel(),
     etag = etag,
     kindId = kindId.toModel(),

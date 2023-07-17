@@ -1,4 +1,4 @@
-package com.example.learntube.di
+package com.example.learntube.di.modules.utils
 
 import android.content.Context
 import com.bumptech.glide.Glide

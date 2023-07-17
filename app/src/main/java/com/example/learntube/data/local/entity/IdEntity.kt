@@ -7,16 +7,16 @@ import com.example.learntube.domain.models.Id
 @Entity
 data class IdEntity(
     @ColumnInfo("item_kind")
-    var kind: String,
+    var kind: String?,
 
     @ColumnInfo("playlistId")
-    var playlistId: String? = null,
+    var playlistId: String?,
 
     @ColumnInfo("videoId")
-    var videoId: String? = null,
+    var videoId: String?,
 
     @ColumnInfo("channelId")
-    var channelId: String? = null,
+    var channelId: String?,
 )
 
 fun IdEntity.toModel() = Id(

@@ -98,7 +98,7 @@
         <!-- Содержимое шторки -->
 
         <TextView
-            android:id="@+id/textViewDrawer"
+            android:id="@+id/favouriteScreenTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/favourite"

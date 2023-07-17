@@ -6,10 +6,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SetVideoAsFavoriteUseCase @Inject constructor(
+class GetFavoriteVideoUseCase @Inject constructor(
     private val searchItemRepository: SearchItemRepository
-){
-    suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) {
-        searchItemRepository.setVideoAsFavorite(favouriteVideo = favouriteVideo)
-    }
+) {
+    suspend fun getFavouriteVideo(): List<SearchItem> = searchItemRepository.getFavouriteVideo()
 }

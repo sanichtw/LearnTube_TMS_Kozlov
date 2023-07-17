@@ -20,7 +20,7 @@
             android:layout_height="70dp"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="5dp"
-            android:contentDescription="post_icon"
+            android:contentDescription="@string/post_icon"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toStartOf="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +31,7 @@
             android:layout_width="257dp"
             android:layout_height="match_parent"
             android:fontFamily="@font/alata"
+            android:gravity="start"
             android:padding="5dp"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -48,18 +49,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/black" />
-
-        <!--        <TextView-->
-            <!--            android:id="@+id/publishedAt"-->
-            <!--            android:layout_width="fill_parent"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:fontFamily="@font/alata"-->
-            <!--            android:padding="3dp"-->
-            <!--            android:textColor="@color/black"-->
-            <!--            android:textSize="11sp"-->
-            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintStart_toStartOf="parent" />-->
     </LinearLayout>
 
 </LinearLayout>

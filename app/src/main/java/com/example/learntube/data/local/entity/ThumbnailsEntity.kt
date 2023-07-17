@@ -1,16 +1,11 @@
 package com.example.learntube.data.local.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.learntube.domain.models.Thumbnails
 
 @Entity
-data class ThumbnailsEntity (
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
-
+data class ThumbnailsEntity(
     @Embedded(prefix = "default_")
     var default: ThumbnailEntity? = null,
 

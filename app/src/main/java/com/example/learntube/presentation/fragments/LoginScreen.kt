@@ -14,7 +14,6 @@ import com.example.learntube.databinding.FragmentLoginScreenBinding
 
 
 class LoginScreen : Fragment() {
-
     private var _binding: FragmentLoginScreenBinding? = null
     private val binding get() = _binding!!
 

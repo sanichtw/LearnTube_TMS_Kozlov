@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -21,15 +20,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learntube.R
 import com.example.learntube.databinding.FragmentPostsScreenBinding
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.presentation.adapters.SearchItemAdapter
+import com.example.learntube.presentation.tutorials.Tutorials
 import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.math.abs
 
 
@@ -44,7 +44,6 @@ class PostsScreen : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,30 +52,19 @@ class PostsScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val textView = binding.textView
 
-        Log.d("Test Adapter", "PostsScreens View Created")
-
+        binding.favouriteScreenTextView?.setOnClickListener {
+            findNavController().navigate(R.id.action_PostsScreen_to_FavouriteVideoScreen)
+        }
 
         if (!viewModel.searchQueryState.isNullOrBlank()) {
             textView.text = viewModel.searchQueryState
             lifecycleScope.launch {
                 viewModel.getPosts(viewModel.searchQueryState)
                 observePosts()
-                Log.d("Test Adapter", "SearchQuery is not blank")
-
             }
         }
+
         bindDrawer()
-
-        val listOfCourses = mutableListOf<String>()
-        listOfCourses.add("Java Courses");
-        listOfCourses.add("Python Courses");
-        listOfCourses.add("Kotlin Courses");
-        listOfCourses.add("Room");
-        listOfCourses.add("Git & Github");
-        listOfCourses.add("Hilt");
-        listOfCourses.add("Dagger");
-        listOfCourses.add("Android Development");
-
 
         textView.setOnClickListener {
             val dialog = Dialog(requireContext())
@@ -90,8 +78,36 @@ class PostsScreen : Fragment() {
             val listView = dialog.findViewById<ListView>(R.id.list_view)
             val editText = dialog.findViewById<EditText>(R.id.edit_text)
 
-            val adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, listOfCourses)
-            listView.adapter = adapter
+            val spinnerAdapter = ArrayAdapter(
+                requireContext(),
+                R.layout.simple_list_item_1,
+                Tutorials().getTutorials()
+            )
+
+            listView.apply {
+                adapter = spinnerAdapter
+                onItemClickListener =
+                    AdapterView.OnItemClickListener { _, _, position, _ ->
+                        textView.text = spinnerAdapter.getItem(position)
+
+                        val searchInputText = textView.text.toString()
+                        binding.apply {
+                            loader.visibility = View.VISIBLE
+                            recyclerView.visibility = View.GONE
+                        }
+
+                        if (searchInputText.isNotBlank()) {
+                            lifecycleScope.launch {
+                                viewModel.apply {
+                                    searchQueryState = searchInputText
+                                    getPosts(searchQueryState)
+                                }
+                                observePosts()
+                            }
+                        }
+                        dialog.dismiss()
+                    }
+            }
 
             editText.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
@@ -102,43 +118,18 @@ class PostsScreen : Fragment() {
                 ) {
                 }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    adapter.filter.filter(s)
-                }
-
                 override fun afterTextChanged(s: Editable?) {}
-            })
 
-            listView.onItemClickListener =
-                AdapterView.OnItemClickListener { parentFragment, view, position, id ->
-                    textView.text = adapter.getItem(position)
-
-                    val searchInputText = textView.text.toString()
-                    binding.apply {
-                        loader.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    }
-
-                    if (searchInputText.isNotBlank()) {
-                        lifecycleScope.launch {
-                            viewModel.apply {
-                                searchQueryState = searchInputText
-                                getPosts(searchQueryState)
-                            }
-                            Log.d("Test Adapter", "ListView was clicked")
-
-                            observePosts()
-                        }
-                    }
-                    dialog.dismiss()
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    spinnerAdapter.filter.filter(s)
                 }
+            })
         }
     }
 
     private fun observePosts() {
         viewModel.postList.distinctUntilChanged().observe(viewLifecycleOwner) { posts ->
             initRecycler(posts)
-            Log.d("Test Adapter", "Got Live Data")
         }
 
         binding.apply {
@@ -148,8 +139,6 @@ class PostsScreen : Fragment() {
     }
 
     private fun initRecycler(searchItems: List<SearchItem>) {
-        Log.d("Test Adapter", "Init Recycler")
-
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = SearchItemAdapter(
@@ -188,9 +177,5 @@ class PostsScreen : Fragment() {
         binding.drawerLayout.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
         }
-    }
-
-    companion object {
-        private const val SEARCH_KEY = "searchQuery"
     }
 }

@@ -20,7 +20,8 @@ object DataBaseModule {
             .databaseBuilder(
                 context,
                 SearchItemDataBase::class.java,
-                "posts_db")
+                "posts_db"
+            )
             .fallbackToDestructiveMigration()
             .build()
 
@@ -28,6 +29,6 @@ object DataBaseModule {
     @Singleton
     fun provideDao(db: SearchItemDataBase) = db.searchItemDao()
 
-/*    @Provides
-    fun provideEntity() = SearchItemEntity()*/
+//    @Provides
+//    fun provideEntity() = SearchItemEntity()
 }

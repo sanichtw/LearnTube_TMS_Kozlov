@@ -13,17 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.learntube.R
 import com.example.learntube.domain.models.SearchItem
-import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
+import com.example.learntube.presentation.viewmodels.FavouriteVideoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchItemAdapter(
+
+class FavouriteVideoAdapter(
     private val context: Context,
-    private val searchItems: List<SearchItem>,
-    private val viewModel: SearchItemsViewModel
+    private val favouriteVideo: List<SearchItem>,
+    private val viewModel: FavouriteVideoViewModel
 ) :
-    RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
+    RecyclerView.Adapter<FavouriteVideoAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.icon)
@@ -39,7 +40,7 @@ class SearchItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = searchItems[position]
+        val item = favouriteVideo[position]
 
         holder.apply {
             titleTextView.text = item.snippet.title
@@ -50,7 +51,7 @@ class SearchItemAdapter(
                 setOnCheckedChangeListener { _, isChecked ->
                     CoroutineScope(Dispatchers.Main).launch {
                         item.snippet.isFavourite = isChecked
-                        viewModel.setVideoAsFavorite(item)
+//                        viewModel.setVideoAsFavorite(item)
                     }
                 }
             }
@@ -89,6 +90,6 @@ class SearchItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        return searchItems.size
+        return favouriteVideo.size
     }
 }

@@ -3,21 +3,21 @@ package com.example.learntube.domain.models
 import com.example.learntube.data.local.entity.SnippetEntity
 
 data class Snippet(
-    val publishedAt: String,
+    val publishedAt: String = "",
 
-    val channelId: String,
+    val channelId: String = "",
 
-    val title: String,
+    val title: String = "",
 
-    val description: String,
+    val description: String = "",
 
-    val channelTitle: String,
+    val channelTitle: String = "",
 
     val thumbnails: Thumbnails,
 
-    val liveBroadcastContent: String,
+    val liveBroadcastContent: String = "",
 
-    val publishTime: String,
+    val publishTime: String = "",
 
     var isFavourite: Boolean = false
 )
