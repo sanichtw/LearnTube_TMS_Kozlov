@@ -45,7 +45,6 @@ class FavouriteVideoScreen : Fragment() {
             adapter = FavouriteVideoAdapter(
                 context = requireContext(),
                 favouriteVideo = favouriteVideo,
-                viewModel = viewModel
             )
         }
     }

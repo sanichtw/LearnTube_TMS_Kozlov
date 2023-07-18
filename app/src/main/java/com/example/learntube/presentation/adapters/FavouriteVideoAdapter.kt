@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.learntube.R
 import com.example.learntube.domain.models.SearchItem
-import com.example.learntube.presentation.viewmodels.FavouriteVideoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ import kotlinx.coroutines.launch
 internal class FavouriteVideoAdapter(
     private val context: Context,
     private val favouriteVideo: List<SearchItem>,
-    private val viewModel: FavouriteVideoViewModel
 ) :
     RecyclerView.Adapter<FavouriteVideoAdapter.ViewHolder>() {
 
@@ -51,7 +49,6 @@ internal class FavouriteVideoAdapter(
                 setOnCheckedChangeListener { _, isChecked ->
                     CoroutineScope(Dispatchers.Main).launch {
                         item.snippet?.isFavourite = isChecked
-//                        viewModel.setVideoAsFavorite(item)
                     }
                 }
             }

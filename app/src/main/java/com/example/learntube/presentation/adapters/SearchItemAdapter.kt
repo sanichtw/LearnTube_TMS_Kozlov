@@ -47,9 +47,8 @@ internal class SearchItemAdapter(
                 isChecked = currentItem.snippet?.isFavourite ?: false
 
                 setOnCheckedChangeListener { _, isChecked ->
-                    CoroutineScope(Dispatchers.Main).launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         currentItem.snippet?.isFavourite = isChecked
-//                        viewModel.setVideoAsFavorite(item)
                         onCheckedChanged(currentItem)
                     }
                 }

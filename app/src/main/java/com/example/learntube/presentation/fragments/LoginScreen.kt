@@ -40,11 +40,10 @@ class LoginScreen : Fragment() {
                 val email = emailInput.text.toString().trim()
                 val password = passwordInput.text.toString().trim()
                 val errorText = emailErrorTextView
-                val loginButton = loginButton
 
                 if (email.isEmpty() || password.isEmpty()) {
                     errorText.apply {
-                        text = getString(R.string.enter_email_and_password) //TODO res
+                        text = getString(R.string.enter_email_and_password)
                         visibility = View.VISIBLE
                     }
                 } else {

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learntube.R
@@ -52,79 +53,82 @@ class PostsScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val textView = binding.textView
-
-        binding.favouriteScreenTextView?.setOnClickListener {
-            findNavController().navigate(R.id.action_PostsScreen_to_FavouriteVideoScreen)
-        }
-
-        if (!viewModel.searchQueryState.isNullOrBlank()) {
-            textView.text = viewModel.searchQueryState
-            lifecycleScope.launch {
-                viewModel.getPosts(viewModel.searchQueryState)
-                observePosts()
-            }
-        }
-
         bindDrawer()
 
-        textView.setOnClickListener {
-            val dialog = Dialog(requireContext())
-            dialog.apply {
-                setContentView(R.layout.dialog_searchable_spinner)
-                window?.setLayout(800, 800)
-                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                show()
+        with(binding) {
+            favouriteScreenTextView?.setOnClickListener {
+                navigateToPostsFragment()
             }
 
-            val listView = dialog.findViewById<ListView>(R.id.list_view)
-            val editText = dialog.findViewById<EditText>(R.id.edit_text)
+            textView.setOnClickListener {
+                val dialog = Dialog(requireContext())
+                dialog.apply {
+                    setContentView(R.layout.dialog_searchable_spinner)
+                    window?.setLayout(800, 800)
+                    window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    show()
+                }
 
-            val spinnerAdapter = ArrayAdapter(
-                requireContext(),
-                R.layout.simple_list_item_1,
-                Tutorials().getTutorials()
-            )
+                val listView = dialog.findViewById<ListView>(R.id.list_view)
+                val editText = dialog.findViewById<EditText>(R.id.edit_text)
 
-            listView.apply {
-                adapter = spinnerAdapter
-                onItemClickListener =
-                    AdapterView.OnItemClickListener { _, _, position, _ ->
-                        textView.text = spinnerAdapter.getItem(position)
+                val spinnerAdapter = ArrayAdapter(
+                    requireContext(),
+                    R.layout.simple_list_item_1,
+                    Tutorials().getTutorials()
+                )
 
-                        val searchInputText = textView.text.toString()
-                        binding.apply {
+                listView.apply {
+                    adapter = spinnerAdapter
+                    onItemClickListener =
+                        AdapterView.OnItemClickListener { _, _, position, _ ->
+                            textView.text = spinnerAdapter.getItem(position)
+
+                            val searchInputText = textView.text.toString()
                             loader.visibility = View.VISIBLE
                             recyclerView.visibility = View.GONE
-                        }
 
-                        if (searchInputText.isNotBlank()) {
-                            lifecycleScope.launch {
-                                viewModel.apply {
-                                    searchQueryState = searchInputText
-                                    getPosts(searchQueryState)
+                            if (searchInputText.isNotBlank()) {
+                                lifecycleScope.launch {
+                                    viewModel.apply {
+                                        searchQueryState = searchInputText
+                                        getPosts(searchQueryState)
+                                    }
+                                    observePosts()
                                 }
-                                observePosts()
                             }
+                            dialog.dismiss()
                         }
-                        dialog.dismiss()
-                    }
-            }
-
-            editText.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {}
-
-                override fun afterTextChanged(s: Editable?) {}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    spinnerAdapter.filter.filter(s)
                 }
-            })
+
+                editText.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {}
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        spinnerAdapter.filter.filter(s)
+                    }
+                })
+            }
+            if (!viewModel.searchQueryState.isNullOrBlank()) {
+                textView.text = viewModel.searchQueryState
+                lifecycleScope.launch {
+                    viewModel.getPosts(viewModel.searchQueryState)
+                    observePosts()
+                }
+            }
         }
     }
 
@@ -145,7 +149,7 @@ class PostsScreen : Fragment() {
             adapter = SearchItemAdapter(
                 context = requireContext(),
                 searchItems = searchItems,
-                onCheckedChanged = {favouriteVideo ->
+                onCheckedChanged = { favouriteVideo ->
                     CoroutineScope(Dispatchers.IO).launch {
                         viewModel.setVideoAsFavorite(favouriteVideo)
                     }
@@ -182,5 +186,18 @@ class PostsScreen : Fragment() {
         binding.drawerLayout.setOnTouchListener { _, event ->
             gestureDetector.onTouchEvent(event)
         }
+    }
+
+    private fun navigateToPostsFragment() {
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_up)
+            .setExitAnim(R.anim.slide_down)
+            .build()
+
+        findNavController().navigate(
+            R.id.action_PostsScreen_to_FavouriteVideoScreen,
+            null,
+            navOptions
+        )
     }
 }

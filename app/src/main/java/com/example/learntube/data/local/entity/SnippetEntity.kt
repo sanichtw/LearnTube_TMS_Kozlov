@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.learntube.domain.models.Snippet
 
-//TODO ? не доверяй им: они тебя погубят
 @Entity
 internal data class SnippetEntity(
     @PrimaryKey(autoGenerate = true)
