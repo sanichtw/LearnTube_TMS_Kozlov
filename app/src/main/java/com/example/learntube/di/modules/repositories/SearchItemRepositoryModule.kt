@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class SearchItemRepositoryModule {
+internal class SearchItemRepositoryModule {
     @Provides
     fun provideRepositoryModule(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource): SearchItemRepository =
         SearchItemRepositoryImpl(remoteDataSource = remoteDataSource, localDataSource = localDataSource)

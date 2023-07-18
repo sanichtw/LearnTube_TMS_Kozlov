@@ -4,7 +4,7 @@ import com.example.learntube.data.local.entity.ThumbnailEntity
 import com.example.learntube.domain.models.Thumbnail
 import com.google.gson.annotations.SerializedName
 
-data class ThumbnailDto(
+internal data class ThumbnailDto(
     @SerializedName("url")
     val url: String,
 
@@ -15,13 +15,13 @@ data class ThumbnailDto(
     val height: Int
 )
 
-internal fun ThumbnailDto.toEntity() = ThumbnailEntity(
+internal fun ThumbnailDto.mapToThumbnailEntity() = ThumbnailEntity(
     url = url,
     width = width,
     height = height
 )
 
-internal fun ThumbnailDto.toModel() = Thumbnail(
+internal fun ThumbnailDto.mapToThumbnailDomain() = Thumbnail(
     url = url,
     width = width,
     height = height

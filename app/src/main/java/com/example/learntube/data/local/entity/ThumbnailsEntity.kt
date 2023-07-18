@@ -5,7 +5,7 @@ import androidx.room.Entity
 import com.example.learntube.domain.models.Thumbnails
 
 @Entity
-data class ThumbnailsEntity(
+internal data class ThumbnailsEntity(
     @Embedded(prefix = "default_")
     var default: ThumbnailEntity? = null,
 
@@ -16,10 +16,10 @@ data class ThumbnailsEntity(
     var high: ThumbnailEntity? = null
 )
 
-fun ThumbnailsEntity.toModel() = Thumbnails(
-    default = default?.toModel(),
-    high = high?.toModel(),
-    medium = medium?.toModel()
+internal fun ThumbnailsEntity.mapToThumbnailsDomain() = Thumbnails(
+    default = default?.mapToThumbnailDomain(),
+    high = high?.mapToThumbnailDomain(),
+    medium = medium?.mapToThumbnailDomain()
 )
 
 

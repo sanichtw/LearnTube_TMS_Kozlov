@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import com.example.learntube.domain.models.SearchItem
 
 @Entity
-data class SearchItemEntity(
+internal class SearchItemEntity(
     @PrimaryKey
     @ColumnInfo("etag")
     var etag: String,
@@ -19,13 +19,14 @@ data class SearchItemEntity(
     val kindId: IdEntity,
 
     @ColumnInfo("searchQuery")
-    var searchQuery: String? = "",
+    var searchQuery: String? = ""
 )
 
-fun SearchItemEntity.toModel(searchQuery: String? = "") = SearchItem(
-    snippet = snippet.toModel(),
+//TODO rename
+internal fun SearchItemEntity.toModel(searchQuery: String? = "") = SearchItem(
+    snippet = snippet.mapToSnippetDomain(),
     etag = etag,
-    kindId = kindId.toModel(),
+    kindId = kindId.mapToIdDomain(),
     searchQuery = searchQuery
 )
 

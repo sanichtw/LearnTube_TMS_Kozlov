@@ -29,6 +29,8 @@ import com.example.learntube.presentation.adapters.SearchItemAdapter
 import com.example.learntube.presentation.tutorials.Tutorials
 import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
@@ -143,7 +145,11 @@ class PostsScreen : Fragment() {
             adapter = SearchItemAdapter(
                 context = requireContext(),
                 searchItems = searchItems,
-                viewModel = viewModel
+                onCheckedChanged = {favouriteVideo ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.setVideoAsFavorite(favouriteVideo)
+                    }
+                }
             )
         }
     }

@@ -16,7 +16,7 @@ data class ThumbnailEntity(
     var height: Int
 )
 
-internal fun ThumbnailEntity.toModel() = Thumbnail(
+internal fun ThumbnailEntity.mapToThumbnailDomain() = Thumbnail(
     url = url,
     width = width,
     height = height

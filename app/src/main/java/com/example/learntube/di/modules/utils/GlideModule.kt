@@ -11,8 +11,9 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class GlideModule {
+internal class GlideModule {
 
+    //TODO improve - singleton inject
     @Provides
     fun provideRequestManager(@ApplicationContext context: Context): RequestManager {
         return Glide.with(context)

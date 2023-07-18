@@ -6,8 +6,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.learntube.domain.models.Snippet
 
+//TODO ? не доверяй им: они тебя погубят
 @Entity
-data class SnippetEntity(
+internal data class SnippetEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id")
     var id: Long = 0,
@@ -40,13 +41,14 @@ data class SnippetEntity(
     var isFavourite: Boolean = false
 )
 
-fun SnippetEntity.toModel() = Snippet(
+//TODO rename toSnippetModel()
+internal fun SnippetEntity.mapToSnippetDomain() = Snippet(
     publishedAt = publishedAt,
     channelId = channelId,
     title = title,
     description = description,
     channelTitle = channelTitle,
-    thumbnails = thumbnails.toModel(),
+    thumbnails = thumbnails.mapToThumbnailsDomain(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime,
     isFavourite = isFavourite

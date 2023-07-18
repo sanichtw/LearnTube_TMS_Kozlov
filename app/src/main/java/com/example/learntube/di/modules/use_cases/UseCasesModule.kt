@@ -11,11 +11,12 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UseCasesModule {
+internal class UseCasesModule {
     @Provides
     fun provideGetFavouriteVideoUseCase(searchItemRepository: SearchItemRepositoryImpl): GetFavoriteVideoUseCase =
         GetFavoriteVideoUseCase(searchItemRepository = searchItemRepository)
 
+    //TODO rename
     @Provides
     fun provideSearchItemsBySearch(searchItemRepository: SearchItemRepositoryImpl): GetSearchItemsBySearchQueryUseCase =
         GetSearchItemsBySearchQueryUseCase(searchItemRepository = searchItemRepository)

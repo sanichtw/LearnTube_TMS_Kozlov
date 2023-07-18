@@ -2,7 +2,8 @@ package com.example.learntube.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class ResponseDto(
+//TODO ? and remove unused
+internal data class ResponseDto(
     @SerializedName("kind")
     val kind: String,
 

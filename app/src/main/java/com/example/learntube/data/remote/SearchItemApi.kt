@@ -5,7 +5,7 @@ import com.example.learntube.data.remote.dto.ResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface SearchItemApi {
+internal interface SearchItemApi {
     private companion object {
         const val GET_POSTS_REQUEST = "search"
 
@@ -22,7 +22,8 @@ interface SearchItemApi {
         const val API_KEY = BuildConfig.YOUTUBE_API_TOKEN
 
         const val TYPE_PARAM = "type"
-        val TYPE_CONST = listOf("video", "playlist")
+        const val VIDEO_TYPE_CONST = "video"
+        const val PLAYLIST_TYPE_CONST = "playlist"
     }
 
     @GET(GET_POSTS_REQUEST)
@@ -30,8 +31,8 @@ interface SearchItemApi {
         @Query(PART_PARAM) part: String = PART_CONST,
         @Query(QUERY_RESULT) maxResults: Int = QUERY_RESULT_CONST,
         @Query(QUERY_PARAM) text: String? = QUERY_CONST,
-        @Query(TYPE_PARAM) firstType: String = TYPE_CONST[0],
-        @Query(TYPE_PARAM) secondType: String = TYPE_CONST[1],
+        @Query(TYPE_PARAM) firstType: String = VIDEO_TYPE_CONST,
+        @Query(TYPE_PARAM) secondType: String = PLAYLIST_TYPE_CONST,
         @Query(KEY_PARAM) apiKey: String = API_KEY
     ): ResponseDto
 }

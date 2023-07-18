@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataBaseModule {
+internal object DataBaseModule {
     @Provides
     @Singleton
     fun provideDataBase(@ApplicationContext context: Context): SearchItemDataBase =
@@ -20,7 +20,7 @@ object DataBaseModule {
             .databaseBuilder(
                 context,
                 SearchItemDataBase::class.java,
-                "posts_db"
+                "posts_db" //TODO add const - const val
             )
             .fallbackToDestructiveMigration()
             .build()

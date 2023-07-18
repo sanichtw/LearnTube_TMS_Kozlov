@@ -5,6 +5,6 @@ import androidx.room.RoomDatabase
 import com.example.learntube.data.local.entity.SearchItemEntity
 
 @Database(entities = [SearchItemEntity::class], version = 3)
-abstract class SearchItemDataBase : RoomDatabase() {
+internal abstract class SearchItemDataBase : RoomDatabase() {
     abstract fun searchItemDao(): SearchItemDao
 }

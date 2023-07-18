@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+internal object ApiModule {
 
     private const val BASE_URL = "https://youtube.googleapis.com/youtube/v3/"
 

@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class FavouriteVideoAdapter(
+internal class FavouriteVideoAdapter(
     private val context: Context,
     private val favouriteVideo: List<SearchItem>,
     private val viewModel: FavouriteVideoViewModel

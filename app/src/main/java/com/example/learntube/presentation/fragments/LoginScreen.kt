@@ -16,8 +16,11 @@ import com.example.learntube.databinding.FragmentLoginScreenBinding
 
 class LoginScreen : Fragment() {
     private var _binding: FragmentLoginScreenBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding!! //TODO WTF??????????????????????????????????????????????????????????????? flow ветка
 
+    private companion object {
+        const val REQUIRED_VALUE = 8
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,33 +35,38 @@ class LoginScreen : Fragment() {
 
         setListenersToInputs()
 
-        binding.loginButton.setOnClickListener {
-            val email = binding.emailInput.text.toString().trim()
-            val password = binding.passwordInput.text.toString().trim()
-            val errorText = binding.emailErrorTextView
-            val loginButton = binding.loginButton
+        with(binding) {
+            loginButton.setOnClickListener {
+                val email = emailInput.text.toString().trim()
+                val password = passwordInput.text.toString().trim()
+                val errorText = emailErrorTextView
+                val loginButton = loginButton
 
-            if (email.isEmpty() || password.isEmpty()) {
-                errorText.apply {
-                    text = "Please enter email and password"
-                    visibility = View.VISIBLE
+                if (email.isEmpty() || password.isEmpty()) {
+                    errorText.apply {
+                        text = getString(R.string.enter_email_and_password) //TODO res
+                        visibility = View.VISIBLE
+                    }
+                } else {
+                    errorText.visibility = View.GONE
+                    loginButton.isEnabled = true
+                    navigateToPostsFragment()
                 }
-            } else {
-                errorText.visibility = View.GONE
-                loginButton.isEnabled = true
-
-                val navOptions = NavOptions.Builder()
-                    .setEnterAnim(R.anim.slide_up)
-                    .setExitAnim(R.anim.slide_down)
-                    .build()
-
-                findNavController().navigate(
-                    R.id.action_LoginScreen_to_PostsScreen,
-                    null,
-                    navOptions
-                )
             }
         }
+    }
+
+    private fun navigateToPostsFragment() {
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_up)
+            .setExitAnim(R.anim.slide_down)
+            .build()
+
+        findNavController().navigate(
+            R.id.action_LoginScreen_to_PostsScreen,
+            null,
+            navOptions
+        )
     }
 
     private fun setListenersToInputs() {
@@ -80,23 +88,24 @@ class LoginScreen : Fragment() {
     }
 
     private fun updateButtonState() {
-        val email = binding.emailInput.text.toString().trim()
-        val password = binding.passwordInput.text.toString().trim()
-        val errorText = binding.emailErrorTextView
-        val loginButton = binding.loginButton
+        with(binding) {
+            val email = emailInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
+            val errorText = emailErrorTextView
 
-        val emailValid = validateEmail(email)
-        val passwordValid = validatePassword(password)
+            val emailValid = validateEmail(email)
+            val passwordValid = validatePassword(password)
 
-        loginButton.isEnabled = emailValid && passwordValid
+            loginButton.isEnabled = emailValid && passwordValid
 
-        if (!emailValid || !passwordValid) {
-            errorText.apply {
-                text = "Incorrect password or email"
-                visibility = View.VISIBLE
+            if (!emailValid || !passwordValid) {
+                errorText.apply {
+                    text = getString(R.string.incorrect_password_or_email)
+                    visibility = View.VISIBLE
+                }
+            } else {
+                errorText.visibility = View.GONE
             }
-        } else {
-            errorText.visibility = View.GONE
         }
     }
 
@@ -105,6 +114,6 @@ class LoginScreen : Fragment() {
     }
 
     private fun validatePassword(password: String): Boolean {
-        return password.length >= 8
+        return password.length >= REQUIRED_VALUE
     }
 }

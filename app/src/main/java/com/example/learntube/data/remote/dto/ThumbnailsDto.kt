@@ -4,7 +4,7 @@ import com.example.learntube.data.local.entity.ThumbnailsEntity
 import com.example.learntube.domain.models.Thumbnails
 import com.google.gson.annotations.SerializedName
 
-data class ThumbnailsDto(
+internal data class ThumbnailsDto(
     @SerializedName("default")
     val default: ThumbnailDto,
 
@@ -15,15 +15,15 @@ data class ThumbnailsDto(
     val medium: ThumbnailDto
 )
 
-internal fun ThumbnailsDto.toEntity() = ThumbnailsEntity(
-    default = default.toEntity(),
-    high = high.toEntity(),
-    medium = medium.toEntity()
+internal fun ThumbnailsDto.mapToThumbnailsEntity() = ThumbnailsEntity(
+    default = default.mapToThumbnailEntity(),
+    high = high.mapToThumbnailEntity(),
+    medium = medium.mapToThumbnailEntity()
 )
 
-internal fun ThumbnailsDto.toModel() = Thumbnails(
-    default = default.toModel(),
-    high = high.toModel(),
-    medium = medium.toModel()
+internal fun ThumbnailsDto.mapToThumbnailsDomain() = Thumbnails(
+    default = default.mapToThumbnailDomain(),
+    high = high.mapToThumbnailDomain(),
+    medium = medium.mapToThumbnailDomain()
 )
 

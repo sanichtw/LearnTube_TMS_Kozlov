@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchItemsViewModel @Inject constructor(
+internal class SearchItemsViewModel @Inject constructor(
     private val getPostsUseCase: GetSearchItemsBySearchQueryUseCase,
     private val setToFavouriteVideoUseCase: SetVideoAsFavoriteUseCase
 ) : ViewModel() {

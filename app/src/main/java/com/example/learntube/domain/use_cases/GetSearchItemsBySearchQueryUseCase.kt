@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetSearchItemsBySearchQueryUseCase @Inject constructor(
+internal class GetSearchItemsBySearchQueryUseCase @Inject constructor(
     private val searchItemRepository: SearchItemRepository
 ) {
     suspend fun getSearchItemsBySearchQuery(searchQuery: String?): List<SearchItem> =

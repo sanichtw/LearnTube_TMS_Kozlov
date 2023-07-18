@@ -4,7 +4,7 @@ import com.example.learntube.data.local.SearchItemDao
 import com.example.learntube.data.local.entity.SearchItemEntity
 import javax.inject.Inject
 
-class LocalDataSourceImpl @Inject constructor(
+internal class LocalDataSourceImpl @Inject constructor(
     private val searchItemDao: SearchItemDao
 ) : LocalDataSource {
     override suspend fun getAllSearchItems(searchQuery: String?): List<SearchItemEntity> =

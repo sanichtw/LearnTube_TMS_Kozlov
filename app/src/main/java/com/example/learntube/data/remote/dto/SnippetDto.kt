@@ -4,7 +4,8 @@ import com.example.learntube.data.local.entity.SnippetEntity
 import com.example.learntube.domain.models.Snippet
 import com.google.gson.annotations.SerializedName
 
-data class SnippetDto(
+//TODO доверяй - но проверяй
+internal data class SnippetDto(
     @SerializedName("publishedAt")
     val publishedAt: String,
 
@@ -27,27 +28,27 @@ data class SnippetDto(
     val liveBroadcastContent: String,
 
     @SerializedName("publishTime")
-    val publishTime: String,
+    val publishTime: String
 )
 
-internal fun SnippetDto.toEntity() = SnippetEntity(
+internal fun SnippetDto.mapToSnippetEntity() = SnippetEntity(
     publishedAt = publishedAt,
     channelId = channelId,
     title = title,
     description = description,
     channelTitle = channelTitle,
-    thumbnails = thumbnails.toEntity(),
+    thumbnails = thumbnails.mapToThumbnailsEntity(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime
 )
 
-internal fun SnippetDto.toModel() = Snippet(
+internal fun SnippetDto.mapToSnippetDomain() = Snippet(
     publishedAt = publishedAt,
     channelId = channelId,
     title = title,
     description = description,
     channelTitle = channelTitle,
-    thumbnails = thumbnails.toModel(),
+    thumbnails = thumbnails.mapToThumbnailsDomain(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime
 )

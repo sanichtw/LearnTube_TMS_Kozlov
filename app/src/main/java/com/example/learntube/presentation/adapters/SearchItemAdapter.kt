@@ -13,15 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.learntube.R
 import com.example.learntube.domain.models.SearchItem
-import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchItemAdapter(
+internal class SearchItemAdapter(
     private val context: Context,
     private val searchItems: List<SearchItem>,
-    private val viewModel: SearchItemsViewModel
+    private val onCheckedChanged: (item: SearchItem) -> Unit
 ) :
     RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
 
@@ -39,26 +38,27 @@ class SearchItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = searchItems[position]
+        val currentItem = searchItems[position]
 
         holder.apply {
-            titleTextView.text = item.snippet.title
+            titleTextView.text = currentItem.snippet.title
 
             checkBox.apply {
-                isChecked = item.snippet.isFavourite
+                isChecked = currentItem.snippet.isFavourite
 
                 setOnCheckedChangeListener { _, isChecked ->
                     CoroutineScope(Dispatchers.Main).launch {
-                        item.snippet.isFavourite = isChecked
-                        viewModel.setVideoAsFavorite(item)
+                        currentItem.snippet.isFavourite = isChecked
+//                        viewModel.setVideoAsFavorite(item)
+                        onCheckedChanged(currentItem)
                     }
                 }
             }
         }
 
-        when (item.kindId.kind) {
+        when (currentItem.kindId.kind) {
             "youtube#video" -> holder.itemView.setOnClickListener {
-                val videoId = item.kindId.videoId
+                val videoId = currentItem.kindId.videoId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -70,7 +70,7 @@ class SearchItemAdapter(
             }
 
             "youtube#playlist" -> holder.itemView.setOnClickListener {
-                val playlistId = item.kindId.playlistId
+                val playlistId = currentItem.kindId.playlistId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -84,7 +84,7 @@ class SearchItemAdapter(
 
         Glide
             .with(context)
-            .load(item.snippet.thumbnails.high?.url)
+            .load(currentItem.snippet.thumbnails.high?.url)
             .into(holder.imageView)
     }
 

@@ -26,5 +26,6 @@
     <string name="favourite">Favourite</string>
     <string name="post_icon">post icon</string>
     <string name="search">Search…</string>
-    <string name="enter">Please enter email and password</string>
+    <string name="enter_email_and_password">Please enter email and password</string>
+    <string name="incorrect_password_or_email">Please enter email and password</string>
 </resources>

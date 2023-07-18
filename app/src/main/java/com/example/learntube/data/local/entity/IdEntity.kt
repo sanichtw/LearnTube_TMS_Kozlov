@@ -4,8 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.example.learntube.domain.models.Id
 
+//TODO internal
 @Entity
-data class IdEntity(
+internal class IdEntity(
     @ColumnInfo("item_kind")
     var kind: String?,
 
@@ -16,10 +17,10 @@ data class IdEntity(
     var videoId: String?,
 
     @ColumnInfo("channelId")
-    var channelId: String?,
+    var channelId: String?
 )
 
-fun IdEntity.toModel() = Id(
+internal fun IdEntity.mapToIdDomain() = Id(
     kind = kind,
     playlistId = playlistId,
     videoId = videoId,

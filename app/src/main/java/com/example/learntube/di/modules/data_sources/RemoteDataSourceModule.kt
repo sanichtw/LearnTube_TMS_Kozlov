@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RemoteDataSourceModule {
+internal class RemoteDataSourceModule {
     @Provides
     fun provideRemoteDataSource(searchItemApi: SearchItemApi): RemoteDataSource = RemoteDataSourceImpl(searchItemApi)
 }

@@ -4,7 +4,7 @@ import com.example.learntube.data.local.entity.SearchItemEntity
 import com.example.learntube.domain.models.SearchItem
 import com.google.gson.annotations.SerializedName
 
-data class SearchItemDto(
+internal data class SearchItemDto(
     @SerializedName("etag")
     val etag: String,
 
@@ -15,16 +15,16 @@ data class SearchItemDto(
     val snippetDto: SnippetDto
 )
 
-internal fun SearchItemDto.toEntity(searchQuery: String?) = SearchItemEntity(
-    snippet = snippetDto.toEntity(),
+internal fun SearchItemDto.mapToSearchItemEntity(searchQuery: String?) = SearchItemEntity(
+    snippet = snippetDto.mapToSnippetEntity(),
     etag = etag,
-    kindId = kindId.toEntity(),
+    kindId = kindId.mapToIdEntity(),
     searchQuery = searchQuery
 )
 
-internal fun SearchItemDto.toModel(searchQuery: String?) = SearchItem(
-    snippet = snippetDto.toModel(),
+internal fun SearchItemDto.mapToSearchItemDomain(searchQuery: String?) = SearchItem(
+    snippet = snippetDto.mapToSnippetDomain(),
     etag = etag,
-    kindId = kindId.toModel(),
+    kindId = kindId.mapToIdDomain(),
     searchQuery = searchQuery
 )

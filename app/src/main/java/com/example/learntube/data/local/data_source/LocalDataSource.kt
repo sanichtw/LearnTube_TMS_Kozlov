@@ -2,7 +2,7 @@ package com.example.learntube.data.local.data_source
 
 import com.example.learntube.data.local.entity.SearchItemEntity
 
-interface LocalDataSource {
+internal interface LocalDataSource {
     suspend fun getAllSearchItems(searchQuery: String?): List<SearchItemEntity>
 
     suspend fun getFavouriteVideo(): List<SearchItemEntity>

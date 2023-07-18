@@ -12,16 +12,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavouriteVideoViewModel @Inject constructor(
+internal class FavouriteVideoViewModel @Inject constructor(
     private val getFavouriteVideoUseCase: GetFavoriteVideoUseCase,
     private val setVideoAsFavouriteUseCase: SetVideoAsFavoriteUseCase
 ) : ViewModel() {
-    private val _favouriteVideo = MutableLiveData<List<SearchItem>>()
+    private val _favouriteVideo = MutableLiveData<List<SearchItem>>() //Flow (mutableState) and remember (сохранение состояние списка)
     val favouriteVideo: LiveData<List<SearchItem>> = _favouriteVideo
 
     init {
         viewModelScope.launch {
-            getFavouriteVideo()
+            getFavouriteVideo() //TODO rename
         }
     }
 
@@ -33,3 +33,17 @@ class FavouriteVideoViewModel @Inject constructor(
         setVideoAsFavouriteUseCase.setVideoAsFavorite(favouriteVideo = favouriteVideo)
     }
 }
+
+//    адаптер что-то выполняет
+//    из адаптера к фрагменту идут callBack
+//    callBack = {
+//        viewModel.updateFavoriteVideo(favouriteVideo =favouriteVideo )
+//    }
+//
+//
+//    во вьюмодели по этой функции
+//    fun updateFavoriteVideo(favouriteVideo: SearchItem){
+//        handleEvent(event = )
+//        через events
+//    }
+//}
