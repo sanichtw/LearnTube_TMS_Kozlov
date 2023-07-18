@@ -7,13 +7,13 @@ import com.example.learntube.domain.models.Thumbnail
 @Entity
 data class ThumbnailEntity(
     @ColumnInfo("url")
-    var url: String,
+    var url: String? = "",
 
     @ColumnInfo("width")
-    var width: Int,
+    var width: Int? = 0,
 
     @ColumnInfo("height")
-    var height: Int
+    var height: Int? = 0
 )
 
 internal fun ThumbnailEntity.mapToThumbnailDomain() = Thumbnail(

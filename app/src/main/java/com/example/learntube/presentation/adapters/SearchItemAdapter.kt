@@ -41,14 +41,14 @@ internal class SearchItemAdapter(
         val currentItem = searchItems[position]
 
         holder.apply {
-            titleTextView.text = currentItem.snippet.title
+            titleTextView.text = currentItem.snippet?.title
 
             checkBox.apply {
-                isChecked = currentItem.snippet.isFavourite
+                isChecked = currentItem.snippet?.isFavourite ?: false
 
                 setOnCheckedChangeListener { _, isChecked ->
                     CoroutineScope(Dispatchers.Main).launch {
-                        currentItem.snippet.isFavourite = isChecked
+                        currentItem.snippet?.isFavourite = isChecked
 //                        viewModel.setVideoAsFavorite(item)
                         onCheckedChanged(currentItem)
                     }
@@ -56,7 +56,7 @@ internal class SearchItemAdapter(
             }
         }
 
-        when (currentItem.kindId.kind) {
+        when (currentItem.kindId?.kind) {
             "youtube#video" -> holder.itemView.setOnClickListener {
                 val videoId = currentItem.kindId.videoId
 
@@ -84,7 +84,7 @@ internal class SearchItemAdapter(
 
         Glide
             .with(context)
-            .load(currentItem.snippet.thumbnails.high?.url)
+            .load(currentItem.snippet?.thumbnails?.highSize?.url)
             .into(holder.imageView)
     }
 

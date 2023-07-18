@@ -2,7 +2,7 @@ package com.example.learntube.data.repository
 
 import com.example.learntube.data.local.data_source.LocalDataSource
 import com.example.learntube.data.local.entity.SearchItemEntity
-import com.example.learntube.data.local.entity.toModel
+import com.example.learntube.data.local.entity.mapToSearchItemDomain
 import com.example.learntube.data.remote.data_source.RemoteDataSource
 import com.example.learntube.data.remote.dto.mapToSearchItemDomain
 import com.example.learntube.data.remote.dto.mapToSearchItemEntity
@@ -29,12 +29,12 @@ internal class SearchItemRepositoryImpl @Inject constructor(
             })
             remoteItems.map { remoteItem -> remoteItem.mapToSearchItemDomain(searchQuery) }
         } else {
-            localItems.map { localItem -> localItem.toModel(searchQuery) }
+            localItems.map { localItem -> localItem.mapToSearchItemDomain(searchQuery) }
         }
     }
 
     override suspend fun getFavouriteVideo(): List<SearchItem> =
-        localDataSource.getFavouriteVideo().map { favouriteVideo -> favouriteVideo.toModel() }
+        localDataSource.getFavouriteVideo().map { favouriteVideo -> favouriteVideo.mapToSearchItemDomain() }
 
     override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) =
         localDataSource.setVideoAsFavorite(favouriteVideo.mapToSearchItemEntity())

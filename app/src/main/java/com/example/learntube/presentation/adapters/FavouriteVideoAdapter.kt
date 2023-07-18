@@ -43,21 +43,21 @@ internal class FavouriteVideoAdapter(
         val item = favouriteVideo[position]
 
         holder.apply {
-            titleTextView.text = item.snippet.title
+            titleTextView.text = item.snippet?.title
 
             checkBox.apply {
-                isChecked = item.snippet.isFavourite
+                isChecked = item.snippet?.isFavourite ?: false
 
                 setOnCheckedChangeListener { _, isChecked ->
                     CoroutineScope(Dispatchers.Main).launch {
-                        item.snippet.isFavourite = isChecked
+                        item.snippet?.isFavourite = isChecked
 //                        viewModel.setVideoAsFavorite(item)
                     }
                 }
             }
         }
 
-        when (item.kindId.kind) {
+        when (item.kindId?.kind) {
             "youtube#video" -> holder.itemView.setOnClickListener {
                 val videoId = item.kindId.videoId
 
@@ -85,7 +85,7 @@ internal class FavouriteVideoAdapter(
 
         Glide
             .with(context)
-            .load(item.snippet.thumbnails.high?.url)
+            .load(item.snippet?.thumbnails?.highSize?.url)
             .into(holder.imageView)
     }
 

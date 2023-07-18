@@ -14,28 +14,28 @@ internal data class SnippetEntity(
     var id: Long = 0,
 
     @ColumnInfo("publishedAt")
-    var publishedAt: String,
+    var publishedAt: String? = "",
 
     @ColumnInfo("channelId")
-    var channelId: String,
+    var channelId: String? = "",
 
     @ColumnInfo("title")
-    var title: String,
+    var title: String? = "",
 
     @ColumnInfo("description")
-    var description: String,
+    var description: String? = "",
 
     @ColumnInfo("channelTitle")
-    var channelTitle: String,
+    var channelTitle: String? = "",
 
     @Embedded(prefix = "thumbnails_")
-    var thumbnails: ThumbnailsEntity,
+    var thumbnails: ThumbnailsEntity?,
 
     @ColumnInfo("liveBroadcastContent")
-    var liveBroadcastContent: String,
+    var liveBroadcastContent: String? = "",
 
     @ColumnInfo("publishTime")
-    var publishTime: String,
+    var publishTime: String? = "",
 
     @ColumnInfo(name = "isFavourite")
     var isFavourite: Boolean = false
@@ -48,7 +48,7 @@ internal fun SnippetEntity.mapToSnippetDomain() = Snippet(
     title = title,
     description = description,
     channelTitle = channelTitle,
-    thumbnails = thumbnails.mapToThumbnailsDomain(),
+    thumbnails = thumbnails?.mapToThumbnailsDomain(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime,
     isFavourite = isFavourite

@@ -4,13 +4,13 @@ import com.example.learntube.data.local.entity.ThumbnailsEntity
 
 //TODO ? в домейне быть не может: значения по умолчанию или пустая модель
 internal data class Thumbnails (
-    val default: Thumbnail?,
-    val high: Thumbnail?,
-    val medium: Thumbnail?
+    val defaultSize: Thumbnail?,
+    val mediumSize: Thumbnail?,
+    val highSize: Thumbnail?,
 )
 
 internal fun Thumbnails.mapToThumbnailsEntity() = ThumbnailsEntity(
-    default = default?.mapToThumbnailEntity(),
-    high = high?.mapToThumbnailEntity(),
-    medium = medium?.mapToThumbnailEntity()
+    defaultSize = defaultSize?.mapToThumbnailEntity(),
+    mediumSize = mediumSize?.mapToThumbnailEntity(),
+    highSize = highSize?.mapToThumbnailEntity(),
 )

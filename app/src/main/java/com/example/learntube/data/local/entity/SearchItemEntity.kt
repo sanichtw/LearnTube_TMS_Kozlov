@@ -10,23 +10,23 @@ import com.example.learntube.domain.models.SearchItem
 internal class SearchItemEntity(
     @PrimaryKey
     @ColumnInfo("etag")
-    var etag: String,
+    var etag: String = "",
 
     @Embedded(prefix = "snippet_")
-    var snippet: SnippetEntity,
+    var snippet: SnippetEntity?,
 
     @Embedded(prefix = "kindId_")
-    val kindId: IdEntity,
+    val kindId: IdEntity?,
 
     @ColumnInfo("searchQuery")
     var searchQuery: String? = ""
 )
 
 //TODO rename
-internal fun SearchItemEntity.toModel(searchQuery: String? = "") = SearchItem(
-    snippet = snippet.mapToSnippetDomain(),
+internal fun SearchItemEntity.mapToSearchItemDomain(searchQuery: String? = "") = SearchItem(
+    snippet = snippet?.mapToSnippetDomain(),
     etag = etag,
-    kindId = kindId.mapToIdDomain(),
+    kindId = kindId?.mapToIdDomain(),
     searchQuery = searchQuery
 )
 
