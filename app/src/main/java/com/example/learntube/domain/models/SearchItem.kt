@@ -6,7 +6,7 @@ internal data class SearchItem(
     val snippet: Snippet,
     val etag: String,
     val kindId: Id,
-    val searchQuery: String? = "",
+    val searchQuery: String?,
 )
 
 internal fun SearchItem.mapToSearchItemEntity() = SearchItemEntity(

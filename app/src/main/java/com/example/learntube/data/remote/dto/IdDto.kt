@@ -4,7 +4,6 @@ import com.example.learntube.data.local.entity.IdEntity
 import com.example.learntube.domain.models.Id
 import com.google.gson.annotations.SerializedName
 
-//TODO rename
 internal data class IdDto(
     @SerializedName("kind")
     val kind: String,
@@ -19,7 +18,6 @@ internal data class IdDto(
     val videoId: String?
 )
 
-//TODO rename
 internal fun IdDto.mapToIdEntity() = IdEntity(
     kind = kind,
     playlistId = playlistId,
@@ -27,7 +25,6 @@ internal fun IdDto.mapToIdEntity() = IdEntity(
     channelId = channelId
 )
 
-//TODO rename
 internal fun IdDto.mapToIdDomain() = Id(
     kind = kind,
     playlistId = playlistId,

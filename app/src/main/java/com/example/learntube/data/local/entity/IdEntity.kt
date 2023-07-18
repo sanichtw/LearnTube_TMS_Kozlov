@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.example.learntube.domain.models.Id
 
-//TODO internal
 @Entity
 internal class IdEntity(
     @ColumnInfo("item_kind")
