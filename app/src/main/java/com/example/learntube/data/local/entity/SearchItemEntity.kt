@@ -22,7 +22,6 @@ internal class SearchItemEntity(
     var searchQuery: String? = ""
 )
 
-//TODO rename
 internal fun SearchItemEntity.mapToSearchItemDomain(searchQuery: String? = "") = SearchItem(
     snippet = snippet?.mapToSnippetDomain(),
     etag = etag,

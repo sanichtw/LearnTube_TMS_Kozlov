@@ -16,14 +16,16 @@ internal interface SearchItemDao {
     @Query("SELECT * FROM SearchItemEntity WHERE searchQuery = :searchQuery")
     suspend fun getAllSearchItems(searchQuery: String?): List<SearchItemEntity>
 
-    @Query("SELECT * FROM SearchItemEntity WHERE snippet_isFavourite = $TRUE_FAVOURITE_STATE")
-    suspend fun getFavouriteVideo(): List<SearchItemEntity>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(searchItems: List<SearchItemEntity>)  //return result of working (such as true/false) Response<D, E>, Success<T>
 
     @Update()
     suspend fun setVideoAsFavorite(favouriteVideo: SearchItemEntity)
+
+    @Query("SELECT * FROM SearchItemEntity WHERE snippet_isFavourite = $TRUE_FAVOURITE_STATE")
+    suspend fun getFavouriteVideo(): List<SearchItemEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(searchItems: SearchItemEntity)
