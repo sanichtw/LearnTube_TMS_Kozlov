@@ -136,7 +136,6 @@ class PostsScreen : Fragment() {
         viewModel.postList.distinctUntilChanged().observe(viewLifecycleOwner) { posts ->
             initRecycler(posts)
         }
-
         binding.apply {
             loader.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
