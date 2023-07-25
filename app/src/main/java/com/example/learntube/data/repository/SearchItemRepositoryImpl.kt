@@ -34,7 +34,8 @@ internal class SearchItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFavouriteVideo(): List<SearchItem> =
-        localDataSource.getFavouriteVideo().map { favouriteVideo -> favouriteVideo.mapToSearchItemDomain() }
+        localDataSource.getFavouriteVideo()
+            .map { favouriteVideo -> favouriteVideo.mapToSearchItemDomain() }
 
     override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) =
         localDataSource.setVideoAsFavorite(favouriteVideo.mapToSearchItemEntity())

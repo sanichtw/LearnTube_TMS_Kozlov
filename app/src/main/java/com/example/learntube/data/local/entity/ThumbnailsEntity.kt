@@ -7,14 +7,22 @@ import com.example.learntube.domain.models.Thumbnails
 @Entity
 internal data class ThumbnailsEntity(
     @Embedded(prefix = "default_")
-    var defaultSize: ThumbnailEntity? = null,
+    var defaultSize: ThumbnailEntity?,
 
     @Embedded(prefix = "medium_")
-    var mediumSize: ThumbnailEntity? = null,
+    var mediumSize: ThumbnailEntity?,
 
     @Embedded(prefix = "high_")
-    var highSize: ThumbnailEntity? = null
-)
+    var highSize: ThumbnailEntity?
+) {
+    companion object {
+        fun empty(): ThumbnailsEntity = ThumbnailsEntity(
+            defaultSize = ThumbnailEntity.empty(),
+            mediumSize = ThumbnailEntity.empty(),
+            highSize = ThumbnailEntity.empty()
+        )
+    }
+}
 
 internal fun ThumbnailsEntity.mapToThumbnailsDomain() = Thumbnails(
     defaultSize = defaultSize?.mapToThumbnailDomain(),

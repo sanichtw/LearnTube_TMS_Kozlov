@@ -12,19 +12,21 @@ import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.presentation.adapters.FavouriteVideoAdapter
 import com.example.learntube.presentation.viewmodels.FavouriteVideoViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavouriteVideoScreen : Fragment() {
-    private var _binding: FragmentFavouriteVideoBinding? = null
+    private lateinit var binding: FragmentFavouriteVideoBinding
     private val viewModel: FavouriteVideoViewModel by viewModels()
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentFavouriteVideoBinding.inflate(inflater, container, false)
+        binding = FragmentFavouriteVideoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,8 +36,10 @@ class FavouriteVideoScreen : Fragment() {
     }
 
     private fun observeFavouriteVideo() {
-        viewModel.favouriteVideo.observe(viewLifecycleOwner) { favouriteVideo ->
-            initRecycler(favouriteVideo)
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.favouriteVideo.collect { posts ->
+                initRecycler(posts)
+            }
         }
     }
 
@@ -44,7 +48,12 @@ class FavouriteVideoScreen : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = FavouriteVideoAdapter(
                 context = requireContext(),
-                favouriteVideo = favouriteVideo,
+                favouriteItems = favouriteVideo,
+                onCheckedChanged = { favouriteVideo ->
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.setVideoAsFavorite(favouriteVideo)
+                    }
+                }
             )
         }
     }
