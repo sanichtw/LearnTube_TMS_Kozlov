@@ -13,32 +13,47 @@ internal data class SnippetEntity(
     var id: Long = 0,
 
     @ColumnInfo("publishedAt")
-    var publishedAt: String? = "",
+    var publishedAt: String?,
 
     @ColumnInfo("channelId")
-    var channelId: String? = "",
+    var channelId: String?,
 
     @ColumnInfo("title")
-    var title: String? = "",
+    var title: String?,
 
     @ColumnInfo("description")
-    var description: String? = "",
+    var description: String?,
 
     @ColumnInfo("channelTitle")
-    var channelTitle: String? = "",
+    var channelTitle: String?,
 
     @Embedded(prefix = "thumbnails_")
     var thumbnails: ThumbnailsEntity?,
 
     @ColumnInfo("liveBroadcastContent")
-    var liveBroadcastContent: String? = "",
+    var liveBroadcastContent: String?,
 
     @ColumnInfo("publishTime")
-    var publishTime: String? = "",
+    var publishTime: String?,
 
     @ColumnInfo(name = "isFavourite")
     var isFavourite: Boolean = false
-)
+) {
+    companion object {
+        fun empty(): SnippetEntity = SnippetEntity(
+            id = 0,
+            publishedAt = "",
+            channelId = "",
+            title = "",
+            description = "",
+            channelTitle = "",
+            thumbnails = ThumbnailsEntity.empty(),
+            liveBroadcastContent = "",
+            publishTime = "",
+            isFavourite = false
+        )
+    }
+}
 
 //TODO rename toSnippetModel()
 internal fun SnippetEntity.mapToSnippetDomain() = Snippet(

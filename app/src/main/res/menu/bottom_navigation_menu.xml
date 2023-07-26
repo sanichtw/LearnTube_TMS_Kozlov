@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_postsScreen"
+        android:enabled="true"
+        android:title="@string/tutorials"/>
+    <item
+        android:id="@+id/page_favouriteVideoScreen"
+        android:enabled="true"
+        android:title="@string/favourite"/>
+</menu>

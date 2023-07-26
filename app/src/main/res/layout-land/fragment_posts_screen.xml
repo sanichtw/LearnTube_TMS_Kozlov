@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/main_container"
         android:layout_width="match_parent"
@@ -30,38 +29,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView"
-                android:hint="Select course"
+                android:hint="@string/select_course"
                 android:fontFamily="@font/alata"
                 android:padding="12dp"
                 android:gravity="center_vertical"
-                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                app:drawableEndCompat="@drawable/baseline_arrow_drop_down_24"
                 android:background="@android:drawable/editbox_background"
                 />
-
-            <!--            <EditText-->
-            <!--                android:id="@+id/search_input"-->
-            <!--                android:layout_width="329dp"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:background="@drawable/search_input_background"-->
-            <!--                android:fontFamily="@font/alata"-->
-            <!--                android:padding="10dp"-->
-            <!--                app:layout_constraintEnd_toStartOf="@+id/search_button"-->
-            <!--                app:layout_constraintHorizontal_bias="0"-->
-            <!--                app:layout_constraintHorizontal_chainStyle="packed"-->
-            <!--                app:layout_constraintStart_toStartOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--            <ImageButton-->
-            <!--                android:id="@+id/search_button"-->
-            <!--                android:layout_width="64dp"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:background="@drawable/search_button_rounded"-->
-            <!--                android:src="@drawable/search_icon"-->
-            <!--                app:layout_constraintBottom_toBottomOf="@+id/search_input"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintStart_toEndOf="@+id/search_input"-->
-            <!--                app:layout_constraintTop_toTopOf="@+id/search_input" />-->
-
         </LinearLayout>
 
         <!-- RecyclerView -->
@@ -88,7 +62,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Шторка -->
-    <View
+    <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/drawer"
         android:layout_width="240dp"
@@ -96,7 +70,19 @@
         android:layout_gravity="start"
         android:background="@android:color/white">
         <!-- Содержимое шторки -->
-    </View>
+
+        <TextView
+            android:id="@+id/favouriteScreenTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/favourite"
+            android:fontFamily="@font/alata"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
 

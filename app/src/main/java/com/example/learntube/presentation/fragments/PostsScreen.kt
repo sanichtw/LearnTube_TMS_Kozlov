@@ -16,9 +16,9 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -38,107 +38,54 @@ import kotlin.math.abs
 
 @AndroidEntryPoint
 class PostsScreen : Fragment() {
-
-    private var _binding: FragmentPostsScreenBinding? = null
+    private lateinit var binding: FragmentPostsScreenBinding
     private val viewModel: SearchItemsViewModel by viewModels()
-    private val binding get() = _binding!!
+    private val spinnerAdapter: ArrayAdapter<String> by lazy {
+        ArrayAdapter(requireContext(), R.layout.simple_list_item_1, Tutorials().getTutorials())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
+        binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindDrawer()
 
-        with(binding) {
-            favouriteScreenTextView?.setOnClickListener {
-                navigateToPostsFragment()
-            }
+        bindViews()
 
-            textView.setOnClickListener {
-                val dialog = Dialog(requireContext())
-                dialog.apply {
-                    setContentView(R.layout.dialog_searchable_spinner)
-                    window?.setLayout(800, 800)
-                    window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                    show()
-                }
-
-                val listView = dialog.findViewById<ListView>(R.id.list_view)
-                val editText = dialog.findViewById<EditText>(R.id.edit_text)
-
-                val spinnerAdapter = ArrayAdapter(
-                    requireContext(),
-                    R.layout.simple_list_item_1,
-                    Tutorials().getTutorials()
-                )
-
-                listView.apply {
-                    adapter = spinnerAdapter
-                    onItemClickListener =
-                        AdapterView.OnItemClickListener { _, _, position, _ ->
-                            textView.text = spinnerAdapter.getItem(position)
-
-                            val searchInputText = textView.text.toString()
-                            loader.visibility = View.VISIBLE
-                            recyclerView.visibility = View.GONE
-
-                            if (searchInputText.isNotBlank()) {
-                                lifecycleScope.launch {
-                                    viewModel.apply {
-                                        searchQueryState = searchInputText
-                                        getPosts(searchQueryState)
-                                    }
-                                    observePosts()
-                                }
-                            }
-                            dialog.dismiss()
-                        }
-                }
-
-                editText.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {}
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        spinnerAdapter.filter.filter(s)
-                    }
-                })
-            }
-            if (!viewModel.searchQueryState.isNullOrBlank()) {
-                textView.text = viewModel.searchQueryState
-                lifecycleScope.launch {
-                    viewModel.getPosts(viewModel.searchQueryState)
-                    observePosts()
-                }
+        if (!viewModel.searchQueryState.isNullOrBlank()) {
+            lifecycleScope.launch {
+                viewModel.getPosts(viewModel.searchQueryState)
+                observePosts()
             }
         }
     }
 
-    private fun observePosts() {
-        viewModel.postList.distinctUntilChanged().observe(viewLifecycleOwner) { posts ->
-            initRecycler(posts)
+
+    private fun bindViews() {
+        with(binding) {
+            favouriteScreenTextView.setOnClickListener {
+                navigateToPostsFragment()
+            }
+
+            textView.setOnClickListener {
+                showSearchDialog()
+            }
+
+            setupDrawerGesture()
         }
-        binding.apply {
-            loader.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
+    }
+
+    private fun observePosts() {
+        lifecycleScope.launch {
+            viewModel.postList.collect { posts ->
+                initRecycler(posts)
+                updateProgressState(isVisible = false)
+            }
         }
     }
 
@@ -157,7 +104,61 @@ class PostsScreen : Fragment() {
         }
     }
 
-    private fun bindDrawer() {
+    private fun showSearchDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.apply {
+            setContentView(R.layout.dialog_searchable_spinner)
+            window?.setLayout(800, 800)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+
+        val listView = dialog.findViewById<ListView>(R.id.list_view)
+        val editText = dialog.findViewById<EditText>(R.id.edit_text)
+
+
+        listView.apply {
+            adapter = spinnerAdapter
+            onItemClickListener =
+                AdapterView.OnItemClickListener { _, _, position, _ ->
+                    val textView = binding.textView
+                    textView.text = spinnerAdapter.getItem(position)
+
+                    val searchInputText = textView.text.toString()
+                    updateProgressState(isVisible = true)
+
+                    if (searchInputText.isNotBlank()) {
+                        lifecycleScope.launch {
+                            viewModel.apply {
+                                searchQueryState = searchInputText
+                                getPosts(searchQueryState)
+                            }
+                            observePosts()
+                        }
+                    }
+                    dialog.dismiss()
+                }
+        }
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {}
+
+            override fun afterTextChanged(s: Editable?) {}
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) = spinnerAdapter.filter.filter(s)
+        })
+    }
+
+    private fun setupDrawerGesture() {
         val gestureDetector = GestureDetectorCompat(
             requireContext(),
             object : GestureDetector.SimpleOnGestureListener() {
@@ -198,5 +199,10 @@ class PostsScreen : Fragment() {
             null,
             navOptions
         )
+    }
+
+    private fun updateProgressState(isVisible: Boolean) {
+        binding.loader.isVisible = isVisible
+        binding.recyclerView.isVisible = !isVisible
     }
 }

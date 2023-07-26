@@ -3,6 +3,7 @@ package com.example.learntube.presentation.adapters
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.learntube.R
 import com.example.learntube.domain.models.SearchItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 internal class FavouriteVideoAdapter(
     private val context: Context,
-    private val favouriteVideo: List<SearchItem>,
+    private val favouriteItems: List<SearchItem>,
+    private val onCheckedChanged: (item: SearchItem) -> Unit
 ) :
     RecyclerView.Adapter<FavouriteVideoAdapter.ViewHolder>() {
 
@@ -38,25 +37,26 @@ internal class FavouriteVideoAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = favouriteVideo[position]
+        Log.d("Test Adapter", "Called onBindViewHolder")
+
+        val currentItem = favouriteItems[position]
 
         holder.apply {
-            titleTextView.text = item.snippet?.title
+            titleTextView.text = currentItem.snippet?.title
 
             checkBox.apply {
-                isChecked = item.snippet?.isFavourite ?: false
+                isChecked = currentItem.snippet?.isFavourite ?: false
 
-                setOnCheckedChangeListener { _, isChecked ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        item.snippet?.isFavourite = isChecked
-                    }
+                setOnClickListener {
+                    currentItem.snippet?.isFavourite = isChecked
+                    onCheckedChanged(currentItem)
                 }
             }
         }
 
-        when (item.kindId?.kind) {
+        when (currentItem.kindId?.kind) {
             "youtube#video" -> holder.itemView.setOnClickListener {
-                val videoId = item.kindId.videoId
+                val videoId = currentItem.kindId.videoId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -68,7 +68,7 @@ internal class FavouriteVideoAdapter(
             }
 
             "youtube#playlist" -> holder.itemView.setOnClickListener {
-                val playlistId = item.kindId.playlistId
+                val playlistId = currentItem.kindId.playlistId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -82,11 +82,11 @@ internal class FavouriteVideoAdapter(
 
         Glide
             .with(context)
-            .load(item.snippet?.thumbnails?.highSize?.url)
+            .load(currentItem.snippet?.thumbnails?.highSize?.url)
             .into(holder.imageView)
     }
 
     override fun getItemCount(): Int {
-        return favouriteVideo.size
+        return favouriteItems.size
     }
 }

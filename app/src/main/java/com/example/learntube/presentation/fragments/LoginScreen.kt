@@ -15,8 +15,7 @@ import com.example.learntube.databinding.FragmentLoginScreenBinding
 
 
 class LoginScreen : Fragment() {
-    private var _binding: FragmentLoginScreenBinding? = null
-    private val binding get() = _binding!! //TODO WTF??????????????????????????????????????????????????????????????? flow ветка
+    private lateinit var binding: FragmentLoginScreenBinding
 
     private companion object {
         const val REQUIRED_VALUE = 8
@@ -26,31 +25,24 @@ class LoginScreen : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginScreenBinding.inflate(inflater, container, false)
+        binding = FragmentLoginScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupListeners()
 
-        setListenersToInputs()
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailInput.text.toString().trim()
+            val password = binding.passwordInput.text.toString().trim()
 
-        with(binding) {
-            loginButton.setOnClickListener {
-                val email = emailInput.text.toString().trim()
-                val password = passwordInput.text.toString().trim()
-                val errorText = emailErrorTextView
-
-                if (email.isEmpty() || password.isEmpty()) {
-                    errorText.apply {
-                        text = getString(R.string.enter_email_and_password)
-                        visibility = View.VISIBLE
-                    }
-                } else {
-                    errorText.visibility = View.GONE
-                    loginButton.isEnabled = true
-                    navigateToPostsFragment()
-                }
+            if (isInputsValid(email, password)) {
+                binding.emailErrorTextView.visibility = View.GONE
+                navigateToPostsFragment()
+            } else {
+                binding.emailErrorTextView.visibility = View.VISIBLE
+                binding.emailErrorTextView.text = getString(R.string.incorrect_password_or_email)
             }
         }
     }
@@ -68,42 +60,25 @@ class LoginScreen : Fragment() {
         )
     }
 
-    private fun setListenersToInputs() {
-        binding.emailInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                updateButtonState()
-            }
-        })
-
-        binding.passwordInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                updateButtonState()
-            }
-        })
+    private fun setupListeners() {
+        binding.emailInput.addTextChangedListener(createTextWatcher())
+        binding.passwordInput.addTextChangedListener(createTextWatcher())
     }
 
     private fun updateButtonState() {
         with(binding) {
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
-            val errorText = emailErrorTextView
-
             val emailValid = validateEmail(email)
             val passwordValid = validatePassword(password)
 
             loginButton.isEnabled = emailValid && passwordValid
 
             if (!emailValid || !passwordValid) {
-                errorText.apply {
-                    text = getString(R.string.incorrect_password_or_email)
-                    visibility = View.VISIBLE
-                }
+                emailErrorTextView.visibility = View.VISIBLE
+                emailErrorTextView.text = getString(R.string.incorrect_password_or_email)
             } else {
-                errorText.visibility = View.GONE
+                emailErrorTextView.visibility = View.GONE
             }
         }
     }
@@ -114,5 +89,19 @@ class LoginScreen : Fragment() {
 
     private fun validatePassword(password: String): Boolean {
         return password.length >= REQUIRED_VALUE
+    }
+
+    private fun isInputsValid(email: String, password: String): Boolean {
+        return validateEmail(email) && validatePassword(password)
+    }
+
+    private fun createTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                updateButtonState()
+            }
+        }
     }
 }

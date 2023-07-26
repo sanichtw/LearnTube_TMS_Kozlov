@@ -7,17 +7,26 @@ import com.example.learntube.domain.models.Id
 @Entity
 internal class IdEntity(
     @ColumnInfo("item_kind")
-    var kind: String? = "",
+    var kind: String?,
 
     @ColumnInfo("playlistId")
-    var playlistId: String? = "",
+    var playlistId: String?,
 
     @ColumnInfo("videoId")
-    var videoId: String? = "",
+    var videoId: String?,
 
     @ColumnInfo("channelId")
-    var channelId: String? = ""
-)
+    var channelId: String?
+) {
+    companion object {
+        fun empty(): IdEntity = IdEntity(
+            kind = "",
+            playlistId = "",
+            videoId = "",
+            channelId = ""
+        )
+    }
+}
 
 internal fun IdEntity.mapToIdDomain() = Id(
     kind = kind,
