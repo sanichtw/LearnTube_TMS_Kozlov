@@ -68,7 +68,7 @@ class PostsScreen : Fragment() {
 
     private fun bindViews() {
         with(binding) {
-            favouriteScreenTextView?.setOnClickListener {
+            favouriteScreenTextView.setOnClickListener {
                 navigateToPostsFragment()
             }
 
@@ -122,7 +122,6 @@ class PostsScreen : Fragment() {
             onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, position, _ ->
                     val textView = binding.textView
-
                     textView.text = spinnerAdapter.getItem(position)
 
                     val searchInputText = textView.text.toString()
@@ -147,19 +146,15 @@ class PostsScreen : Fragment() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun afterTextChanged(s: Editable?) {}
-
             override fun onTextChanged(
                 s: CharSequence?,
                 start: Int,
                 before: Int,
                 count: Int
-            ) {
-                spinnerAdapter.filter.filter(s)
-            }
+            ) = spinnerAdapter.filter.filter(s)
         })
     }
 

@@ -6,14 +6,17 @@ internal class Tutorials {
             "Java Courses",
             "Python Courses",
             "Kotlin Courses",
-            "Room",
+            "Android Room",
             "Git & Github",
             "Hilt",
             "Dagger",
             "Android Development",
             "Clean Architecture",
             "MVVM & MVP & MVI",
-            "JavaScript"
+            "JavaScript Courses",
+            "Gradle",
+            "Jetpack Compose Android",
+            "Android Development"
         )
     }
 }
