@@ -3,7 +3,6 @@ package com.example.learntube.presentation.adapters
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,8 +36,6 @@ internal class SearchItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("Test Adapter", "Called onBindViewHolder")
-
         val currentItem = searchItems[position]
 
         holder.apply {
@@ -87,8 +84,6 @@ internal class SearchItemAdapter(
     }
 
     override fun getItemCount(): Int {
-        Log.d("Test Adapter", "items size: ${searchItems.size}")
-
         return searchItems.size
     }
 }

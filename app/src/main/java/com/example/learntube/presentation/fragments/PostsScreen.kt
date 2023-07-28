@@ -38,30 +38,70 @@ import kotlin.math.abs
 
 @AndroidEntryPoint
 class PostsScreen : Fragment() {
+    companion object {
+        const val RELEVANCE = "Relevance"
+        const val UPLOAD_DATE = "Upload Date"
+        const val NAME = "Name"
+    }
+
     private lateinit var binding: FragmentPostsScreenBinding
     private val viewModel: SearchItemsViewModel by viewModels()
-    private val spinnerAdapter: ArrayAdapter<String> by lazy {
+    private val searchSpinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(requireContext(), R.layout.simple_list_item_1, Tutorials().getTutorials())
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
+
+        setupSortingView()
+        bindViews()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bindViews()
-
         if (!viewModel.searchQueryState.isNullOrBlank()) {
             lifecycleScope.launch {
                 viewModel.getPosts(viewModel.searchQueryState)
+                binding.coursesInput.text = viewModel.searchQueryState
                 observePosts()
             }
+        }
+    }
+
+    private fun setupSortingView() {
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_list_item_1,
+            listOf(RELEVANCE, UPLOAD_DATE, NAME)
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sortBySpinner.adapter = adapter
+
+        binding.sortBySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedSortBy = when (position) {
+                    1 -> UPLOAD_DATE
+                    2 -> NAME
+                    else -> RELEVANCE
+                }
+                lifecycleScope.launch {
+                    viewModel.filterSearchItems(selectedSortBy)
+                }
+                viewModel.filterState = selectedSortBy
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
     }
 
@@ -72,7 +112,7 @@ class PostsScreen : Fragment() {
                 navigateToPostsFragment()
             }
 
-            textView.setOnClickListener {
+            coursesInput.setOnClickListener {
                 showSearchDialog()
             }
 
@@ -118,11 +158,11 @@ class PostsScreen : Fragment() {
 
 
         listView.apply {
-            adapter = spinnerAdapter
+            adapter = searchSpinnerAdapter
             onItemClickListener =
                 AdapterView.OnItemClickListener { _, _, position, _ ->
-                    val textView = binding.textView
-                    textView.text = spinnerAdapter.getItem(position)
+                    val textView = binding.coursesInput
+                    textView.text = searchSpinnerAdapter.getItem(position)
 
                     val searchInputText = textView.text.toString()
                     updateProgressState(isVisible = true)
@@ -132,6 +172,7 @@ class PostsScreen : Fragment() {
                             viewModel.apply {
                                 searchQueryState = searchInputText
                                 getPosts(searchQueryState)
+                                binding.sortByContainer.visibility = View.VISIBLE
                             }
                             observePosts()
                         }
@@ -140,22 +181,7 @@ class PostsScreen : Fragment() {
                 }
         }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {}
-
-            override fun afterTextChanged(s: Editable?) {}
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) = spinnerAdapter.filter.filter(s)
-        })
+        editText.addTextChangedListener(createTextWatcher())
     }
 
     private fun setupDrawerGesture() {
@@ -199,6 +225,16 @@ class PostsScreen : Fragment() {
             null,
             navOptions
         )
+    }
+
+    private fun createTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                searchSpinnerAdapter.filter.filter(s)
+            }
+        }
     }
 
     private fun updateProgressState(isVisible: Boolean) {

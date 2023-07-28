@@ -16,16 +16,16 @@ internal class FavouriteVideoViewModel @Inject constructor(
     private val getFavouriteVideoUseCase: GetFavoriteVideoUseCase,
     private val setVideoAsFavouriteUseCase: SetVideoAsFavoriteUseCase
 ) : ViewModel() {
-    private val _favouriteVideo: MutableStateFlow<List<SearchItem>> = MutableStateFlow(emptyList()) //Flow (mutableState) and remember (сохранение состояние списка)
+    private val _favouriteVideo: MutableStateFlow<List<SearchItem>> = MutableStateFlow(emptyList())
     val favouriteVideo: StateFlow<List<SearchItem>> = _favouriteVideo
 
     init {
         viewModelScope.launch {
-            getFavouriteVideo() //TODO rename
+            getFavouriteVideos()
         }
     }
 
-    private suspend fun getFavouriteVideo() {
+    private suspend fun getFavouriteVideos() {
         _favouriteVideo.value = getFavouriteVideoUseCase.getFavouriteVideo()
     }
 
@@ -34,11 +34,6 @@ internal class FavouriteVideoViewModel @Inject constructor(
     }
 }
 
-//    адаптер что-то выполняет
-//    из адаптера к фрагменту идут callBack
-//    callBack = {
-//        viewModel.updateFavoriteVideo(favouriteVideo =favouriteVideo )
-//    }
 //
 //
 //    во вьюмодели по этой функции

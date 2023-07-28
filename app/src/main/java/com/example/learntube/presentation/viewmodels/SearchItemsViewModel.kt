@@ -22,6 +22,7 @@ internal class SearchItemsViewModel @Inject constructor(
     val postList: StateFlow<List<SearchItem>> = _postList.asStateFlow()
 
     var searchQueryState: String? = null
+    var filterState: String? = null
 
     fun getPosts(searchText: String?) {
         viewModelScope.launch {
@@ -31,5 +32,20 @@ internal class SearchItemsViewModel @Inject constructor(
 
     suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) {
         setToFavouriteVideoUseCase.setVideoAsFavorite(favouriteVideo = favouriteVideo)
+    }
+
+    suspend fun filterSearchItems(sortBy: String) {
+        _postList.value = when (sortBy) {
+            UPLOAD_DATE -> _postList.value.sortedBy { searchItem -> searchItem.snippet?.publishedAt }
+            NAME -> _postList.value.sortedBy { searchItem -> searchItem.snippet?.title }
+            RELEVANCE -> getPostsUseCase.getSearchItemsBySearchQuery(searchQueryState)
+            else -> _postList.value
+        }
+    }
+
+    companion object {
+        const val UPLOAD_DATE = "Upload Date"
+        const val NAME = "Name"
+        const val RELEVANCE = "Relevance"
     }
 }
