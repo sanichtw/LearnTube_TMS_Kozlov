@@ -268,8 +268,4 @@ class SearchFragment : Fragment() {
             navOptions
         )
     }
-
-//    private fun createTextWatcher(): TextWatcher {
-//        return
-//    }
 }
