@@ -57,7 +57,6 @@ internal class SearchItemsViewModel @Inject constructor(
             NAME -> videosList?.sortedBy { searchItem -> searchItem.snippet?.title }
             else -> getPostsUseCase.getSearchItemsBySearchQuery(searchQueryState)
         }
-        println("sorted list: $videosList")
         onEventHandled(event = Event.InitRecycler(videosList = videosList))
         updateProgressVisibilityState(isProgressVisible = false)
     }
