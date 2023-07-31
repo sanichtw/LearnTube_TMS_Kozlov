@@ -13,9 +13,9 @@ internal class LocalDataSourceImpl @Inject constructor(
     override suspend fun getFavouriteVideo(): List<SearchItemEntity> =
         searchItemDao.getFavouriteVideo()
 
-    override suspend fun save(searchItems: List<SearchItemEntity>) = searchItemDao.save(searchItems)
+    override suspend fun save(searchItems: List<SearchItemEntity>?) = searchItemDao.save(searchItems)
     override suspend fun save(searchItem: SearchItemEntity) = searchItemDao.save(searchItem)
 
-    override suspend fun setVideoAsFavorite(favouriteVideo: SearchItemEntity) =
+    override suspend fun setVideoAsFavorite(favouriteVideo: SearchItemEntity?) =
         searchItemDao.setVideoAsFavorite(favouriteVideo = favouriteVideo)
 }

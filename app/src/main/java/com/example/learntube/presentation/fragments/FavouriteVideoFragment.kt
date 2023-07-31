@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FavouriteVideoScreen : Fragment() {
+class FavouriteVideoFragment : Fragment() {
     private lateinit var binding: FragmentFavouriteVideoBinding
     private val viewModel: FavouriteVideoViewModel by viewModels()
 

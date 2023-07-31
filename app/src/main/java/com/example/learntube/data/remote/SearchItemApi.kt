@@ -1,7 +1,7 @@
 package com.example.learntube.data.remote
 
 import com.example.learntube.BuildConfig
-import com.example.learntube.data.remote.dto.ResponseDto
+import com.example.learntube.data.remote.dto.YoutubeApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -34,5 +34,5 @@ internal interface SearchItemApi {
         @Query(TYPE_PARAM) firstType: String = VIDEO_TYPE_CONST,
         @Query(TYPE_PARAM) secondType: String = PLAYLIST_TYPE_CONST,
         @Query(KEY_PARAM) apiKey: String = API_KEY
-    ): ResponseDto
+    ): YoutubeApiResponse
 }

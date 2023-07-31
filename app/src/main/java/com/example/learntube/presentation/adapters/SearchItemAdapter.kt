@@ -16,12 +16,10 @@ import com.example.learntube.domain.models.SearchItem
 
 internal class SearchItemAdapter(
     private val context: Context,
-    var searchItems: List<SearchItem>,
-    private val onCheckedChanged: (item: SearchItem) -> Unit
+    private val searchItems: List<SearchItem>?,
+    private val onCheckedChanged: (item: SearchItem?) -> Unit
 ) :
     RecyclerView.Adapter<SearchItemAdapter.ViewHolder>() {
-
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.icon)
         val titleTextView: TextView = itemView.findViewById(R.id.title)
@@ -36,24 +34,24 @@ internal class SearchItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = searchItems[position]
+        val currentItem = searchItems?.getOrNull(position)
 
         holder.apply {
-            titleTextView.text = currentItem.snippet?.title
+            titleTextView.text = currentItem?.snippet?.title
 
             checkBox.apply {
-                isChecked = currentItem.snippet?.isFavourite ?: false
+                isChecked = currentItem?.snippet?.isFavourite ?: false
 
                 setOnClickListener {
-                    currentItem.snippet?.isFavourite = isChecked
+                    currentItem?.snippet?.isFavourite = isChecked
                     onCheckedChanged(currentItem)
                 }
             }
         }
 
-        when (currentItem.kindId?.kind) {
+        when (currentItem?.kindId?.kind) {
             "youtube#video" -> holder.itemView.setOnClickListener {
-                val videoId = currentItem.kindId.videoId
+                val videoId = currentItem?.kindId.videoId
 
                 val intent = Intent(
                     Intent.ACTION_VIEW,
@@ -79,11 +77,11 @@ internal class SearchItemAdapter(
 
         Glide
             .with(context)
-            .load(currentItem.snippet?.thumbnails?.highSize?.url)
+            .load(currentItem?.snippet?.thumbnails?.highSize?.url)
             .into(holder.imageView)
     }
 
     override fun getItemCount(): Int {
-        return searchItems.size
+        return searchItems?.size ?: 50
     }
 }

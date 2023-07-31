@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.learntube.R
-import com.example.learntube.databinding.FragmentLoginScreenBinding
+import com.example.learntube.databinding.FragmentLoginBinding
 
 
-class LoginScreen : Fragment() {
-    private lateinit var binding: FragmentLoginScreenBinding
+class LoginFragment : Fragment() {
+    private lateinit var binding: FragmentLoginBinding
 
     private companion object {
         const val REQUIRED_VALUE = 8
@@ -25,7 +25,7 @@ class LoginScreen : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentLoginScreenBinding.inflate(inflater, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -54,7 +54,7 @@ class LoginScreen : Fragment() {
             .build()
 
         findNavController().navigate(
-            R.id.action_LoginScreen_to_PostsScreen,
+            R.id.action_LoginFragment_to_SearchFragment,
             null,
             navOptions
         )

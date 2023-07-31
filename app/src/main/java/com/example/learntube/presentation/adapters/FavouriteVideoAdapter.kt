@@ -3,7 +3,6 @@ package com.example.learntube.presentation.adapters
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ internal class FavouriteVideoAdapter(
     private val onCheckedChanged: (item: SearchItem) -> Unit
 ) :
     RecyclerView.Adapter<FavouriteVideoAdapter.ViewHolder>() {
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.icon)
         val titleTextView: TextView = itemView.findViewById(R.id.title)
@@ -37,8 +35,6 @@ internal class FavouriteVideoAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("Test Adapter", "Called onBindViewHolder")
-
         val currentItem = favouriteItems[position]
 
         holder.apply {

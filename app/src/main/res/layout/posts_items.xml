@@ -29,7 +29,7 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="257dp"
+            android:layout_width="241dp"
             android:layout_height="match_parent"
             android:fontFamily="@font/alata"
             android:gravity="center|start"

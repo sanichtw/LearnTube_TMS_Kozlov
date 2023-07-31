@@ -17,26 +17,26 @@ internal class SearchItemRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : SearchItemRepository {
-    override suspend fun getSearchItems(searchQuery: String?): List<SearchItem> {
+    override suspend fun getSearchItems(searchQuery: String?): List<SearchItem>? {
         val localItems: List<SearchItemEntity> = localDataSource.getAllSearchItems(searchQuery)
 
         return if (localItems.isEmpty()) {
             val remoteItems = remoteDataSource.fetchItems(searchQuery)
-            localDataSource.save(remoteItems.map { remoteItem ->
+            localDataSource.save(remoteItems?.map { remoteItem ->
                 remoteItem.mapToSearchItemEntity(
                     searchQuery
                 )
             })
-            remoteItems.map { remoteItem -> remoteItem.mapToSearchItemDomain(searchQuery) }
+            remoteItems?.map { remoteItem -> remoteItem.mapToSearchItemDomain(searchQuery) }
         } else {
             localItems.map { localItem -> localItem.mapToSearchItemDomain(searchQuery) }
         }
     }
 
-    override suspend fun getFavouriteVideo(): List<SearchItem> =
+    override suspend fun getFavouriteVideos(): List<SearchItem> =
         localDataSource.getFavouriteVideo()
             .map { favouriteVideo -> favouriteVideo.mapToSearchItemDomain() }
 
-    override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem) =
-        localDataSource.setVideoAsFavorite(favouriteVideo.mapToSearchItemEntity())
+    override suspend fun setVideoAsFavorite(favouriteVideo: SearchItem?) =
+        localDataSource.setVideoAsFavorite(favouriteVideo?.mapToSearchItemEntity())
 }

@@ -19,10 +19,10 @@ internal interface SearchItemDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(searchItems: List<SearchItemEntity>)  //return result of working (such as true/false) Response<D, E>, Success<T>
+    suspend fun save(searchItems: List<SearchItemEntity>?)  //return result of working (such as true/false) Response<D, E>, Success<T>
 
     @Update()
-    suspend fun setVideoAsFavorite(favouriteVideo: SearchItemEntity)
+    suspend fun setVideoAsFavorite(favouriteVideo: SearchItemEntity?)
 
     @Query("SELECT * FROM SearchItemEntity WHERE snippet_isFavourite = $TRUE_FAVOURITE_STATE")
     suspend fun getFavouriteVideo(): List<SearchItemEntity>

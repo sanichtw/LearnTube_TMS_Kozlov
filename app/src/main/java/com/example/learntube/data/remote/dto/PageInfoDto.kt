@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class PageInfoDto(
     @SerializedName("resultsPerPage")
-    val resultsPerPage: Int,
+    val resultsPerPage: Int?,
 
     @SerializedName("totalResults")
-    val totalResults: Int
+    val totalResults: Int?
 )

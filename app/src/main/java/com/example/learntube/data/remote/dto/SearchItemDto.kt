@@ -9,22 +9,22 @@ internal data class SearchItemDto(
     val etag: String,
 
     @SerializedName("id")
-    val kindId: IdDto,
+    val kindId: IdDto?,
 
     @SerializedName("snippet")
-    val snippetDto: SnippetDto
+    val snippetDto: SnippetDto?
 )
 
 internal fun SearchItemDto.mapToSearchItemEntity(searchQuery: String?) = SearchItemEntity(
-    snippet = snippetDto.mapToSnippetEntity(),
+    snippet = snippetDto?.mapToSnippetEntity(),
     etag = etag,
-    kindId = kindId.mapToIdEntity(),
+    kindId = kindId?.mapToIdEntity(),
     searchQuery = searchQuery
 )
 
 internal fun SearchItemDto.mapToSearchItemDomain(searchQuery: String?) = SearchItem(
-    snippet = snippetDto.mapToSnippetDomain(),
+    snippet = snippetDto?.mapToSnippetDomain(),
     etag = etag,
-    kindId = kindId.mapToIdDomain(),
+    kindId = kindId?.mapToIdDomain(),
     searchQuery = searchQuery
 )

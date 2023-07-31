@@ -1,7 +1,7 @@
 package com.example.learntube.di.modules.use_cases
 
 import com.example.learntube.data.repository.SearchItemRepositoryImpl
-import com.example.learntube.domain.use_cases.GetFavoriteVideoUseCase
+import com.example.learntube.domain.use_cases.GetFavoriteVideosUseCase
 import com.example.learntube.domain.use_cases.GetSearchItemsBySearchQueryUseCase
 import com.example.learntube.domain.use_cases.SetVideoAsFavoriteUseCase
 import dagger.Module
@@ -13,8 +13,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal class UseCasesModule {
     @Provides
-    fun provideGetFavouriteVideoUseCase(searchItemRepository: SearchItemRepositoryImpl): GetFavoriteVideoUseCase =
-        GetFavoriteVideoUseCase(searchItemRepository = searchItemRepository)
+    fun provideGetFavouriteVideoUseCase(searchItemRepository: SearchItemRepositoryImpl): GetFavoriteVideosUseCase =
+        GetFavoriteVideosUseCase(searchItemRepository = searchItemRepository)
 
     //TODO rename
     @Provides

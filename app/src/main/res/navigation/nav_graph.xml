@@ -3,43 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/PostsScreen">
+    app:startDestination="@id/LoginFragment">
 
     <fragment
-        android:id="@+id/LoginScreen"
-        android:name="com.example.learntube.presentation.fragments.LoginScreen"
+        android:id="@+id/LoginFragment"
+        android:name="com.example.learntube.presentation.fragments.LoginFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_login_screen">
+        tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_LoginScreen_to_PostsScreen"
-            app:destination="@id/PostsScreen"
+            android:id="@+id/action_LoginFragment_to_SearchFragment"
+            app:destination="@id/SearchFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/slide_down"/>
     </fragment>
 
     <fragment
-        android:id="@+id/PostsScreen"
-        android:name="com.example.learntube.presentation.fragments.PostsScreen"
+        android:id="@+id/SearchFragment"
+        android:name="com.example.learntube.presentation.fragments.SearchFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_posts_screen">
+        tools:layout="@layout/fragment_search">
 
         <action
-            android:id="@+id/action_PostsScreen_to_FavouriteVideoScreen"
-            app:destination="@id/FavouriteVideoScreen"
+            android:id="@+id/action_SearchFragment_to_FavouriteVideoFragment"
+            app:destination="@id/FavouriteVideoFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/slide_down"/>
     </fragment>
 
     <fragment
-        android:id="@+id/FavouriteVideoScreen"
-        android:name="com.example.learntube.presentation.fragments.FavouriteVideoScreen"
+        android:id="@+id/FavouriteVideoFragment"
+        android:name="com.example.learntube.presentation.fragments.FavouriteVideoFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_favourite_video">
 
         <action
-            android:id="@+id/action_FavouriteVideoScreen_to_PostsScreen"
-            app:destination="@id/FavouriteVideoScreen"
+            android:id="@+id/action_FavouriteVideoFragment_to_SearchFragment"
+            app:destination="@id/FavouriteVideoFragment"
             app:enterAnim="@anim/slide_up"
             app:exitAnim="@anim/slide_down"/>
     </fragment>

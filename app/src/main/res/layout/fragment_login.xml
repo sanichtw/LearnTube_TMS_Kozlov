@@ -17,30 +17,19 @@
         android:id="@+id/title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintHorizontal_bias="0.525"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="-24dp">
-
-        <View
-            android:id="@+id/title_divider"
-            android:layout_width="50dp"
-            android:layout_height="3dp"
-            android:layout_gravity="center|center_horizontal"
-            android:background="#4f94f2"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
-            tools:layout_editor_absoluteX="10dp"
-            tools:layout_editor_absoluteY="10dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/title_name_1"
@@ -49,7 +38,7 @@
                 android:layout_marginStart="76dp"
                 android:fontFamily="@font/alata"
                 android:text="@string/app_name_1"
-                android:textColor="#4f94f2"
+                android:textColor="#84e1b8"
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
@@ -63,8 +52,17 @@
                 android:textColor="#060606"
                 android:textSize="34sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
+
+        <View
+            android:id="@+id/title_divider"
+            android:layout_width="50dp"
+            android:layout_height="3dp"
+            android:layout_gravity="center|center_horizontal"
+            android:background="#84e1b8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,12 +70,13 @@
         android:id="@+id/inputs_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.399">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -131,10 +130,24 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/button_rounded_gradient"
+        android:fontFamily="@font/alata"
+        android:outlineProvider="none"
+        android:text="@string/login_button"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_help_text" />
+
 
     <TextView
         android:id="@+id/social_networks_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/alata"
@@ -144,32 +157,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.69" />
 
     <TextView
         android:id="@+id/input_help_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/alata"
         android:gravity="end"
         android:text="@string/forgot_password"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
-
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputs_container" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/social_networks_buttons_container"
-        android:layout_width="180dp"
-        android:layout_height="63dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.962">
 
         <LinearLayout
             android:id="@+id/linearLayoutCompat"
@@ -235,29 +248,15 @@
 
     <TextView
         android:id="@+id/emailErrorTextView"
-        android:layout_width="297dp"
-        android:layout_height="71dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/alata"
         android:gravity="center"
-        android:textColor="@android:color/holo_red_light"
+        android:textColor="#4f6f5e"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/inputs_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_container" />
-
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="246dp"
-        android:layout_height="37dp"
-        android:background="@drawable/button_rounded_gradient"
-        android:fontFamily="@font/alata"
-        android:outlineProvider="none"
-        android:text="@string/login_button"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/social_networks_buttons_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputs_container" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

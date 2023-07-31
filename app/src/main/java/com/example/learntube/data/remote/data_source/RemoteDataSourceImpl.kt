@@ -7,6 +7,6 @@ import javax.inject.Inject
 internal class RemoteDataSourceImpl @Inject constructor(
     private val searchItemApi: SearchItemApi
 ) : RemoteDataSource {
-    override suspend fun fetchItems(searchQuery: String?): List<SearchItemDto> =
+    override suspend fun fetchItems(searchQuery: String?): List<SearchItemDto>? =
         searchItemApi.getSearchItems(text = searchQuery).items
 }

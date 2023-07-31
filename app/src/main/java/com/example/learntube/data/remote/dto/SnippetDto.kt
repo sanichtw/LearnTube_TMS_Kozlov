@@ -4,31 +4,30 @@ import com.example.learntube.data.local.entity.SnippetEntity
 import com.example.learntube.domain.models.Snippet
 import com.google.gson.annotations.SerializedName
 
-//TODO доверяй - но проверяй
 internal data class SnippetDto(
     @SerializedName("publishedAt")
-    val publishedAt: String,
+    val publishedAt: String?,
 
     @SerializedName("channelId")
-    val channelId: String,
+    val channelId: String?,
 
     @SerializedName("title")
-    val title: String,
+    val title: String?,
 
     @SerializedName("description")
-    val description: String,
+    val description: String?,
 
     @SerializedName("channelTitle")
-    val channelTitle: String,
+    val channelTitle: String?,
 
     @SerializedName("thumbnails")
-    val thumbnails: ThumbnailsDto,
+    val thumbnails: ThumbnailsDto?,
 
     @SerializedName("liveBroadcastContent")
-    val liveBroadcastContent: String,
+    val liveBroadcastContent: String?,
 
     @SerializedName("publishTime")
-    val publishTime: String
+    val publishTime: String?
 )
 
 internal fun SnippetDto.mapToSnippetEntity() = SnippetEntity(
@@ -37,7 +36,7 @@ internal fun SnippetDto.mapToSnippetEntity() = SnippetEntity(
     title = title,
     description = description,
     channelTitle = channelTitle,
-    thumbnails = thumbnails.mapToThumbnailsEntity(),
+    thumbnails = thumbnails?.mapToThumbnailsEntity(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime
 )
@@ -48,7 +47,7 @@ internal fun SnippetDto.mapToSnippetDomain() = Snippet(
     title = title,
     description = description,
     channelTitle = channelTitle,
-    thumbnails = thumbnails.mapToThumbnailsDomain(),
+    thumbnails = thumbnails?.mapToThumbnailsDomain(),
     liveBroadcastContent = liveBroadcastContent,
     publishTime = publishTime
 )

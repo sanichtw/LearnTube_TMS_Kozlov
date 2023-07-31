@@ -24,10 +24,12 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.learntube.R
-import com.example.learntube.databinding.FragmentPostsScreenBinding
+import com.example.learntube.databinding.FragmentSearchBinding
 import com.example.learntube.domain.models.SearchItem
 import com.example.learntube.presentation.adapters.SearchItemAdapter
+import com.example.learntube.presentation.models.SearchFragmentUiState
 import com.example.learntube.presentation.tutorials.Tutorials
+import com.example.learntube.presentation.utils.observeWithLifecycle
 import com.example.learntube.presentation.viewmodels.SearchItemsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -37,25 +39,32 @@ import kotlin.math.abs
 
 
 @AndroidEntryPoint
-class PostsScreen : Fragment() {
+class SearchFragment : Fragment() {
     companion object {
         const val RELEVANCE = "Relevance"
         const val UPLOAD_DATE = "Upload Date"
         const val NAME = "Name"
     }
 
-    private lateinit var binding: FragmentPostsScreenBinding
+    private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchItemsViewModel by viewModels()
+
     private val searchSpinnerAdapter: ArrayAdapter<String> by lazy {
         ArrayAdapter(requireContext(), R.layout.simple_list_item_1, Tutorials().getTutorials())
     }
-
+    private val sortSpinnerAdapter: ArrayAdapter<String> by lazy {
+        ArrayAdapter(
+            requireContext(),
+            R.layout.simple_list_item_1,
+            listOf(RELEVANCE, UPLOAD_DATE, NAME)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPostsScreenBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         setupSortingView()
         bindViews()
@@ -65,44 +74,50 @@ class PostsScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!viewModel.searchQueryState.isNullOrBlank()) {
+        if (!viewModel.searchQueryState.isNullOrEmpty()) {
             lifecycleScope.launch {
-                viewModel.getPosts(viewModel.searchQueryState)
-                binding.coursesInput.text = viewModel.searchQueryState
-                observePosts()
+                binding.searchInput?.text = viewModel.searchQueryState
+                onObserveVideos(viewModel.searchQueryState)
             }
         }
+
+        onObserveScreenState()
+        onObserveEventState()
+    }
+
+    private fun onObserveVideos(searchText: String?) {
+        viewModel.uploadVideos(searchText)
     }
 
     private fun setupSortingView() {
-        val adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.simple_list_item_1,
-            listOf(RELEVANCE, UPLOAD_DATE, NAME)
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.sortBySpinner.adapter = adapter
+        sortSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sortBySpinner.adapter = sortSpinnerAdapter
+        binding.sortBySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (!viewModel.isInitialLoad && !viewModel.searchQueryState.isNullOrBlank()) {
+                        val selectedSortBy = when (position) {
+                            1 -> UPLOAD_DATE
+                            2 -> NAME
+                            else -> RELEVANCE
+                        }
+                        lifecycleScope.launch {
+                            viewModel.filterSearchItems(selectedSortBy)
+                        }
+                        viewModel.filterState = selectedSortBy
+                    } else {
+                        viewModel.isInitialLoad = false
+                    }
+                }
 
-        binding.sortBySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedSortBy = when (position) {
-                    1 -> UPLOAD_DATE
-                    2 -> NAME
-                    else -> RELEVANCE
-                }
-                lifecycleScope.launch {
-                    viewModel.filterSearchItems(selectedSortBy)
-                }
-                viewModel.filterState = selectedSortBy
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {}
-        }
     }
 
 
@@ -112,7 +127,7 @@ class PostsScreen : Fragment() {
                 navigateToPostsFragment()
             }
 
-            coursesInput.setOnClickListener {
+            searchInput?.setOnClickListener {
                 showSearchDialog()
             }
 
@@ -120,16 +135,7 @@ class PostsScreen : Fragment() {
         }
     }
 
-    private fun observePosts() {
-        lifecycleScope.launch {
-            viewModel.postList.collect { posts ->
-                initRecycler(posts)
-                updateProgressState(isVisible = false)
-            }
-        }
-    }
-
-    private fun initRecycler(searchItems: List<SearchItem>) {
+    private fun initRecycler(searchItems: List<SearchItem>?) {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = SearchItemAdapter(
@@ -148,7 +154,7 @@ class PostsScreen : Fragment() {
         val dialog = Dialog(requireContext())
         dialog.apply {
             setContentView(R.layout.dialog_searchable_spinner)
-            window?.setLayout(800, 800)
+            window?.setLayout(800, 1000)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()
         }
@@ -159,29 +165,33 @@ class PostsScreen : Fragment() {
 
         listView.apply {
             adapter = searchSpinnerAdapter
-            onItemClickListener =
-                AdapterView.OnItemClickListener { _, _, position, _ ->
-                    val textView = binding.coursesInput
-                    textView.text = searchSpinnerAdapter.getItem(position)
+            onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                val searchInput = binding.searchInput
+                searchInput?.text = searchSpinnerAdapter.getItem(position)
 
-                    val searchInputText = textView.text.toString()
-                    updateProgressState(isVisible = true)
+                val searchInputText = searchInput?.text.toString()
 
-                    if (searchInputText.isNotBlank()) {
-                        lifecycleScope.launch {
-                            viewModel.apply {
-                                searchQueryState = searchInputText
-                                getPosts(searchQueryState)
-                                binding.sortByContainer.visibility = View.VISIBLE
-                            }
-                            observePosts()
+                if (searchInputText.isNotBlank()) {
+                    lifecycleScope.launch {
+                        viewModel.apply {
+                            searchQueryState = searchInputText
+                            viewModel.uploadVideos(searchQueryState)
                         }
                     }
-                    dialog.dismiss()
                 }
+                dialog.dismiss()
+            }
+
         }
 
-        editText.addTextChangedListener(createTextWatcher())
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchSpinnerAdapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
 
     private fun setupDrawerGesture() {
@@ -214,6 +224,38 @@ class PostsScreen : Fragment() {
         }
     }
 
+    private fun onObserveEventState() {
+        viewModel.getEventsStream().observeWithLifecycle(
+            fragment = this@SearchFragment, action = ::handleEvent
+        )
+    }
+
+
+    private fun onObserveScreenState() {
+        viewModel.getScreenStream().observeWithLifecycle(
+            fragment = this@SearchFragment,
+            action = ::handleScreenState
+        )
+    }
+
+    private fun handleEvent(event: SearchItemsViewModel.Event) {
+        when (event) {
+            is SearchItemsViewModel.Event.Default -> return
+            is SearchItemsViewModel.Event.InitRecycler -> {
+                initRecycler(event.videosList)
+            }
+        }
+    }
+
+    private fun handleScreenState(screenUiState: SearchFragmentUiState) {
+        updateProgressState(isVisible = screenUiState.isProgressVisible)
+    }
+
+    private fun updateProgressState(isVisible: Boolean) {
+        binding.loader.isVisible = isVisible
+        binding.recyclerView.isVisible = !isVisible
+    }
+
     private fun navigateToPostsFragment() {
         val navOptions = NavOptions.Builder()
             .setEnterAnim(R.anim.slide_up)
@@ -221,24 +263,13 @@ class PostsScreen : Fragment() {
             .build()
 
         findNavController().navigate(
-            R.id.action_PostsScreen_to_FavouriteVideoScreen,
+            R.id.action_SearchFragment_to_FavouriteVideoFragment,
             null,
             navOptions
         )
     }
 
-    private fun createTextWatcher(): TextWatcher {
-        return object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                searchSpinnerAdapter.filter.filter(s)
-            }
-        }
-    }
-
-    private fun updateProgressState(isVisible: Boolean) {
-        binding.loader.isVisible = isVisible
-        binding.recyclerView.isVisible = !isVisible
-    }
+//    private fun createTextWatcher(): TextWatcher {
+//        return
+//    }
 }

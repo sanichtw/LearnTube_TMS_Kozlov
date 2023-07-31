@@ -2,7 +2,6 @@ package com.example.learntube.domain.models
 
 import com.example.learntube.data.local.entity.ThumbnailsEntity
 
-//TODO ? в домейне быть не может: значения по умолчанию или пустая модель
 internal data class Thumbnails(
     val defaultSize: Thumbnail?,
     val mediumSize: Thumbnail?,

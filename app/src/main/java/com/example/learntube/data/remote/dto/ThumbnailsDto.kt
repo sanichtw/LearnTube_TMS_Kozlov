@@ -6,24 +6,24 @@ import com.google.gson.annotations.SerializedName
 
 internal data class ThumbnailsDto(
     @SerializedName("default")
-    val defaultSize: ThumbnailDto,
+    val defaultSize: ThumbnailDto?,
 
     @SerializedName("high")
-    val highSize: ThumbnailDto,
+    val highSize: ThumbnailDto?,
 
     @SerializedName("medium")
-    val mediumSize: ThumbnailDto
+    val mediumSize: ThumbnailDto?
 )
 
 internal fun ThumbnailsDto.mapToThumbnailsEntity() = ThumbnailsEntity(
-    defaultSize = defaultSize.mapToThumbnailEntity(),
-    mediumSize = mediumSize.mapToThumbnailEntity(),
-    highSize = highSize.mapToThumbnailEntity(),
+    defaultSize = defaultSize?.mapToThumbnailEntity(),
+    mediumSize = mediumSize?.mapToThumbnailEntity(),
+    highSize = highSize?.mapToThumbnailEntity(),
 )
 
 internal fun ThumbnailsDto.mapToThumbnailsDomain() = Thumbnails(
-    defaultSize = defaultSize.mapToThumbnailDomain(),
-    mediumSize = mediumSize.mapToThumbnailDomain(),
-    highSize = highSize.mapToThumbnailDomain()
+    defaultSize = defaultSize?.mapToThumbnailDomain(),
+    mediumSize = mediumSize?.mapToThumbnailDomain(),
+    highSize = highSize?.mapToThumbnailDomain()
 )
 

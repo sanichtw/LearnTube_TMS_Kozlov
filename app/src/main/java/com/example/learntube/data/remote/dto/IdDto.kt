@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 internal data class IdDto(
     @SerializedName("kind")
-    val kind: String,
+    val kind: String?,
 
     @SerializedName("channelId")
     val channelId: String?,

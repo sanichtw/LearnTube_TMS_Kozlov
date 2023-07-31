@@ -11,7 +11,7 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#4f94f2"
+        android:background="#84e1b8"
         android:paddingLeft="10dp"
         android:paddingTop="20dp"
         android:paddingRight="10dp">
@@ -26,16 +26,15 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/searchInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/courses_input"
-                android:hint="@string/select_course"
-                android:fontFamily="@font/alata"
-                android:padding="12dp"
-                android:gravity="center_vertical"
-                app:drawableEndCompat="@drawable/baseline_arrow_drop_down_24"
                 android:background="@android:drawable/editbox_background"
-                />
+                android:fontFamily="@font/alata"
+                android:gravity="center_vertical"
+                android:hint="@string/select_course"
+                android:padding="12dp"
+                app:drawableEndCompat="@drawable/baseline_arrow_drop_down_24" />
         </LinearLayout>
 
         <LinearLayout
@@ -47,14 +46,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_container">
-
-            <TextView
-                android:id="@+id/textViewLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Filters"
-                android:textSize="16sp"
-                android:textColor="@android:color/black" />
 
             <Spinner
                 android:id="@+id/sortBy_spinner"
@@ -70,43 +61,51 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sortBy_container"
             tools:layout_editor_absoluteX="10dp" />
 
-        <ProgressBar
+        <FrameLayout
             android:id="@+id/loader"
-            android:layout_width="166dp"
-            android:layout_height="238dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Шторка -->
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:orientation="horizontal">
         <!-- Содержимое шторки -->
 
         <TextView
             android:id="@+id/favouriteScreenTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/favourite"
             android:fontFamily="@font/alata"
-            android:textSize="16sp"
             android:padding="16dp"
-            android:textColor="@color/black" />
+            android:text="@string/favourite"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

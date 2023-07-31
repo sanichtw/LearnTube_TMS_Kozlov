@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName
 
 internal data class ThumbnailDto(
     @SerializedName("url")
-    val url: String,
+    val url: String?,
 
     @SerializedName("width")
-    val width: Int,
+    val width: Int?,
 
     @SerializedName("height")
-    val height: Int
+    val height: Int?
 )
 
 internal fun ThumbnailDto.mapToThumbnailEntity() = ThumbnailEntity(
